@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>API test</title>
+	<script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+	<script>
+	$(function(){
+		$("input:eq(0)").click(function(){
+			$.ajax({
+				type: "GET",
+				url: "https://gwu.collibra.com/rest/1.0/search",
+				data:{
+					"query":"Fa*",
+					"type":{
+					   "asset":[
+						  "0000-0000-0000-0000-0000"
+					   ],
+					   "domain":[
+						  "0000-0000-0000-0000-0001"
+					   ]
+					},
+					"max": 50
+				},
+				dataType: "json",
+				success: function(t){
+					console.log(t);
+				},
+				error: function(t){
+					console.log("========================ERROR========================");
+				}
+			});
+		});
+		$("input:eq(1)").click(function(){
+			$.ajax({
+				type: "POST",
+				url: "https://gwu.collibra.com/rest/1.0/search",
+				data:{
+					"query":"Ca*",
+					"filter":{
+						"community":[
+						   "0000-0000-0000-0000-0000",
+						   "0000-0000-0000-0000-0001"
+						],
+						"category":[
+						   "CO",
+						   "VC",
+						   "UR",
+						   "GR",
+						   "TE",
+						],
+						"vocabulary":[
+						   "0000-0000-0000-0000-0000",
+						   "0000-0000-0000-0000-0001"
+						],
+						"type":{
+						   "asset":[
+							  "0000-0000-0000-0000-0000"
+						   ],
+						   "domain":[
+							  "0000-0000-0000-0000-0001"
+						   ]
+						},
+						"status":[
+						   "0000-0000-0000-0000-0000",
+						   "0000-0000-0000-0000-0001"
+						],
+						"includeMeta":true
+					},
+					"fields":[
+					   "name",
+					   "0000-0000-000000003114"
+					],
+					"order":{
+					   "by":"score",
+					   "sort":"desc"
+					},
+					"limit":10,
+					"offset":0,
+					"highlight":true,
+					"relativeUrl":true,
+					"withParents":true
+				},
+				dataType: "json",
+				success: function(t){
+					console.log(t);
+				},
+				error: function(t){
+					console.log("========================ERROR========================");
+				}
+			});
+		});
+
+		$("input:eq(2)").click(function(){
+			$.ajax({
+				type: "GET",
+				url: "https://gwu.collibra.com/rest/1.0/term/29263127-c5b4-49b0-9109-adb7a1db87ec",
+				//url: "https://gwu.collibra.com/community/989f72d9-2f83-4e7f-a1d7-92f655d0f548",
+				dataType: "json",
+				success: function(t){
+					console.log(t);
+				},
+				error: function(t){
+					console.log("========================ERROR========================");
+				}
+			});
+		});
+	});
+	</script>
+</head>
+	<body>
+		<input type="button" value="rest/1.0/search(GET)" /><br /><br />
+		<input type="button" value="rest/1.0/search(POST)" /><br /><br />
+		<input type="button" value="rest/1.0/term/{term}" />
+	</body>
+</html>
