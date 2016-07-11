@@ -1,0 +1,93 @@
+div{
+	margin:5px;
+}
+h1{
+  text-align: center;
+}
+.container{
+	width:50%;
+}
+.search-content{
+	width: 82%;
+}
+.search-icon{
+  width:28px;
+  height:28px;
+}
+.search-result{
+  display: none;
+  position: absolute;
+  left: 25px;
+  top: 80px;
+  background: #fff;
+  border: solid 2px lavender;
+  width:82%;
+  height:300px;
+  z-index: 1;
+  overflow: scroll;
+}
+.search-result>.result-detail{
+  width: 90%;
+  margin: 0 auto;
+  border-bottom: 2px solid lavender;
+  font-family: 'Titillium Web', sans-serif;
+}
+.search-result>.result-detail>h4{
+  font-weight: bold;
+}
+.search-result>.result-detail>p:nth-of-type(1){
+  font-style: italic;
+  color: #BFBFBF;
+}
+.search-result>.result-detail>a){
+  text-decoration: none;
+  color: #5D71D9;
+  cursor: pointer;
+}
+.links{
+  margin: 5px auto;
+}
+.links>div {
+  width: 31%;
+  height: 70px;
+  margin: 1%;
+  padding: 5px;
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+  border-radius: 5px;
+  text-align: center;
+  display:table;
+  float: left;
+}
+.links>div:focus {
+ color: #fff;
+ background-color: #449d44;
+ border-color: #255625;
+ text-decoration: none;
+}
+.links>div:hover {
+ color: #fff;
+ background-color: #449d44;
+ border-color: #398439;
+ text-decoration: none;
+}
+.links>div:active{
+ color: #fff;
+ background-color: #449d44;
+ border-color: #398439;
+ text-decoration: none;
+}
+.links>div>a{
+  display:table-cell;
+  vertical-align:middle;
+  text-decoration: none;
+  cursor: pointer;
+  color: #fff;
+}
+a.login{
+  text-decoration: none;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+}

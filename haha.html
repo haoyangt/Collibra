@@ -10,7 +10,7 @@
 				type: "GET",
 				url: "https://gwu.collibra.com/rest/1.0/search",
 				data:{
-					"query":"Fa*",
+					"query":"age",
 					"type":{
 					   "asset":[
 						  "0000-0000-0000-0000-0000"
@@ -93,8 +93,8 @@
 		$("input:eq(2)").click(function(){
 			$.ajax({
 				type: "GET",
-				url: "https://gwu.collibra.com/rest/1.0/term/29263127-c5b4-49b0-9109-adb7a1db87ec",
-				//url: "https://gwu.collibra.com/community/989f72d9-2f83-4e7f-a1d7-92f655d0f548",
+				url: "https://gwu.collibra.com/rest/1.0/term/4da639a6-1fd7-4211-99e2-389edb92c713",
+				// url: "https://gwu.collibra.com/rest/1.0/hyperlink/business/matched_expressions",
 				dataType: "json",
 				success: function(t){
 					console.log(t);
