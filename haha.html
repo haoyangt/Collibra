@@ -11,15 +11,15 @@
 				url: "https://gwu.collibra.com/rest/1.0/search",
 				data:{
 					"query":"age",
-					"type":{
-					   "asset":[
-						  "0000-0000-0000-0000-0000"
-					   ],
-					   "domain":[
-						  "0000-0000-0000-0000-0001"
-					   ]
-					},
-					"max": 50
+					// "type":{
+					//    "asset":[
+					// 	  "0000-0000-0000-0000-0000"
+					//    ],
+					//    "domain":[
+					// 	  "0000-0000-0000-0000-0001"
+					//    ]
+					// },
+					// "max": 50
 				},
 				dataType: "json",
 				success: function(t){
@@ -30,57 +30,28 @@
 				}
 			});
 		});
-		$("input:eq(1)").click(function(){
-			$.ajax({
-				type: "POST",
-				url: "https://gwu.collibra.com/rest/1.0/search",
-				data:{
-					"query":"Ca*",
+		var data = {"query":"age",
 					"filter":{
-						"community":[
-						   "0000-0000-0000-0000-0000",
-						   "0000-0000-0000-0000-0001"
-						],
 						"category":[
 						   "CO",
 						   "VC",
 						   "UR",
 						   "GR",
 						   "TE",
-						],
-						"vocabulary":[
-						   "0000-0000-0000-0000-0000",
-						   "0000-0000-0000-0000-0001"
-						],
-						"type":{
-						   "asset":[
-							  "0000-0000-0000-0000-0000"
-						   ],
-						   "domain":[
-							  "0000-0000-0000-0000-0001"
-						   ]
-						},
-						"status":[
-						   "0000-0000-0000-0000-0000",
-						   "0000-0000-0000-0000-0001"
-						],
-						"includeMeta":true
+						   "SS"
+						]
 					},
 					"fields":[
-					   "name",
-					   "0000-0000-000000003114"
-					],
-					"order":{
-					   "by":"score",
-					   "sort":"desc"
-					},
-					"limit":10,
-					"offset":0,
-					"highlight":true,
-					"relativeUrl":true,
-					"withParents":true
-				},
+					   "name"
+					]};
+		$("input:eq(1)").click(function(){
+			$.ajax({
+				type: "POST",
+				url: "https://gwu.collibra.com/rest/1.0/search",
+				contentType: "application/json",
+				data: JSON.stringify(data),
 				dataType: "json",
+				
 				success: function(t){
 					console.log(t);
 				},
@@ -93,7 +64,7 @@
 		$("input:eq(2)").click(function(){
 			$.ajax({
 				type: "GET",
-				url: "https://gwu.collibra.com/rest/1.0/term/4da639a6-1fd7-4211-99e2-389edb92c713",
+				url: "https://gwu.collibra.com/rest/1.0/term/283a9633-9d67-4b6b-97c1-622791c83899",
 				// url: "https://gwu.collibra.com/rest/1.0/hyperlink/business/matched_expressions",
 				dataType: "json",
 				success: function(t){

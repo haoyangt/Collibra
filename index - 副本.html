@@ -11,26 +11,38 @@
 	<link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
 
 </head>
-	<body ng-app="MainApp" >
-		<div class="container" >
+	<body>
+		<div class="container">
 			<div class="page-header">
 				<h1>GWU Data Insights</h1>
 			</div>
 			<div class="col-lg-12">
 				Welcome to GWU Data Insights.  Here you will  find information  on Data Governance at GWU.  Here you can search for business terms, view the report catalog, and learn more about data Governance.
 			</div>
-			<div class="col-lg-6 col-lg-offset-3" ng-controller="SearchCtrl">
+			<div class="col-lg-6 col-lg-offset-3">
 				<div class="well">
 					<p>Search for:</p>
 					<p>
-						<input type="text" class="search-content" ng-model="searchContent" ng-keyup="search()" />
+						<input type="text" class="search-content" />
 						<span><img src="images/icons/arrow_right.png" class="search-icon"/></span>
 						<div class="search-result">
-							<div class="result-detail" ng-repeat="result in results">
-								<h4>{{result.name.val}}</h4>
-								<p>{{result.higherReference}} <span ng-show="result.higherReference">></span> {{result.context.val}}</p>
-								<p>{{result.attributes[0].val}}</p>
-								<a href="https://gwu.collibra.com/search#q={{searchContent}}*">Get more details ...</a>
+							<div class="result-detail">
+								<h4>Age</h4>
+								<p>Domain</p>
+								<p>Description</p>
+								<a href="#">Get more details ...</a>
+							</div>
+							<div class="result-detail">
+								<h4>Age</h4>
+								<p>Domain</p>
+								<p>Description</p>
+								<a href="#">Get more details ...</a>
+							</div>
+							<div class="result-detail">
+								<h4>Age</h4>
+								<p>Domain</p>
+								<p>Description</p>
+								<a href="#">Get more details ...</a>
 							</div>
 						</div>
 					</p>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="App">
+<head>
+	<title>API test</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+	<script>
+	// $("input:eq(0)").click(function(){
+	// 	$.ajax({
+	// 		type: "GET",
+	// 		url: "https://gwu.collibra.com/rest/1.0/search",
+	// 		data:{
+	// 			"query":"age"
+	// 		},
+	// 		dataType: "json",
+	// 		success: function(t){
+	// 			console.log(t);
+	// 		},
+	// 		error: function(t){
+	// 			console.log("========================ERROR========================");
+	// 		}
+	// 	});
+	var app = angular.module('App', []);
+	app.controller('Ctrl',function($scope, $http){
+		$scope.mySearch = function(){
+			$http({
+				  method: 'GET',
+				  url: 'https://gwu.collibra.com/rest/1.0/search',
+				  params: $scope.fields
+			}).then(function successCallback(response) {
+			    // this callback will be called asynchronously
+			    // when the response is available
+			    console.log(response);
+			  }, function errorCallback(response) {
+			    // called asynchronously if an error occurs
+			    // or server returns response with an error status.
+			    console.log("error");
+			  });
+			// $http.post('https://gwu.collibra.com/rest/1.0/search', $scope.fields); 
+		}
+	});
+
+	</script>
+</head>
+	<body ng-controller="Ctrl">
+		<form ng-submit="mySearch()">
+			<input type="text" name="query" ng-model="searchContent" />
+			<input type="submit" value="submit" /> 
+		</form>
+		<input type="button" value="rest/1.0/search(GET)" ng-click="searchByGet()" /><br /><br />
+		<input type="button" value="rest/1.0/search(POST)" /><br /><br />
+		<input type="button" value="rest/1.0/term/{term}" />
+	</body>
+</html>
