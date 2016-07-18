@@ -61,3 +61,9 @@ mainApp.controller('SearchCtrl', function($scope, $http){
 		);
 	}
 });
+
+mainApp.controller('LoginCtrl', function($scope, $http){
+	$scope.loginDivHover = function(){
+		console.log('fafa');
+	}
+});
