@@ -8,20 +8,7 @@
 		$("input:eq(0)").click(function(){
 			$.ajax({
 				type: "GET",
-				url: "https://gwu.collibra.com/rest/1.0/search",
-				data:{
-					"query":"age",
-					// "type":{
-					//    "asset":[
-					// 	  "0000-0000-0000-0000-0000"
-					//    ],
-					//    "domain":[
-					// 	  "0000-0000-0000-0000-0001"
-					//    ]
-					// },
-					// "max": 50
-				},
-				dataType: "json",
+				url: "https://gwu.collibra.com/rest/1.0/community/all",
 				success: function(t){
 					console.log(t);
 				},
@@ -29,6 +16,15 @@
 					console.log("========================ERROR========================");
 				}
 			});
+			// var xhr = new XMLHttpRequest();
+			// xhr.open('GET', 'https://gwu.collibra.com/rest/1.0/search', true);
+			// console.log('click');
+			// xhr.onreadystatechange = function(){
+			// 	if((xhr.readyState==4) && (xhr.state == 200)){
+			// 		console.log('success');
+			// 	}
+			// };
+			// xhr.send();
 		});
 		var data = {"query":"age",
 					"filter":{

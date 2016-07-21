@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>API test</title>
+	<title>Index</title>
 	<script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
 	<script src="js/bootstrap.js"></script>
-	<script src="js/index.js"></script>
+	<script src="js/main.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 	<link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
 
 </head>
-	<body ng-app="MainApp" >
+	<body ng-app="IndexApp" >
 		<div class="container" >
 			<div class="page-header">
 				<h1>GWU Data Insights</h1>
@@ -26,28 +26,26 @@
 						<input type="text" class="search-content" ng-model="searchContent" ng-keyup="search()" />
 						<span><img src="images/icons/arrow_right.png" class="search-icon"/></span>
 						<div class="search-result">
-							<div class="result-detail" ng-repeat="result in results">
+							<div class="result-detail" ng-repeat="result in results track by $index">
 								<h4>{{result.name.val}}</h4>
 								<p>{{result.higherReference}} <span ng-show="result.higherReference">></span> {{result.context.val}}</p>
-								<p>{{result.attributes[0].val}}</p>
-								<a href="https://gwu.collibra.com/search#q={{searchContent}}*">Get more details ...</a>
+								<p ng-repeat="attribute in result.attributes track by $index" ng-if="attribute.type=='Description' || attribute.type=='Definition'">{{attribute.val}}</p>
+								<a href="https://gwu.collibra.com/term/{{result.name.id}}" target="_blank">Get more details ...</a>
 							</div>
 						</div>
 					</p>
 				</div>
 			</div>
-			<div class="links">
-				<div><a href="#">View Report Catalog</a></div>
-				<div><a href="#">View Data Sharing Agreements</a></div>
-				<div><a href="#">View Communities</a></div>
-				<div><a href="#">Request a Report</a></div>
-				<div><a href="#">Request a Data Sharing Agreement</a></div>
-				<div><a href="#">View Data Quality Issues</a></div>
+			<div class="col-lg-8 col-lg-offset-2 links">
+				<div><a href="#">Report Catalog</a></div>
+				<div><a href="#">Data Sharing Agreements</a></div>
+				<div><a href="#">Communities</a></div>
+				<div><a href="#">Data Quality Help Desk</a></div>
 			</div>
-			<div class="col-lg-12" ng-controller="LoginCtrl">
-				<p ng-style="loginHoverStyle">
+			<div class="col-lg-12 login" ng-style="loginHoverStyle">
+				<p>
 					<span><img src="images/icons/login.png" class="img-circle"/></span>
-					<a class="login" href="https://gwu.collibra.com/dashboard" target="_blank" ng-mouseenter="loginHoverStyle={'border': 'solid 3px lavender', 'border-radius':'10px', 'background-color': '#EFEFEF'}" ng-mouseleave="loginHoverStyle={}">Login to the Data Governance Center</a>
+					<a href="https://gwu.collibra.com/dashboard" target="_blank" ng-mouseenter="loginHoverStyle={'border': 'solid 3px lavender', 'border-radius':'10px', 'background-color': '#EFEFEF'}" ng-mouseleave="loginHoverStyle={}">Login to the Data Governance Center</a>
 				</p>
 			</div>
 			<div class="col-lg-12">

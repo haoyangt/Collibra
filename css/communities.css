@@ -1,0 +1,104 @@
+div{
+  margin: 5px 0;
+}
+h1{
+  text-align: center;
+}
+h3{
+  margin-top: 0px;
+}
+.container{
+	width:60%;
+}
+.left-section>.search-bar{
+  height: 50px;
+  padding: 10px;
+  margin-top: 0px;
+  background-color: #FAFAFA;
+  border: 2px solid lavender;
+  border-radius: 5px;
+}
+.left-section>.search-bar>p{
+  margin: 0 auto;
+  height: 30px;
+}
+.left-section>.search-bar>p>.search-content{
+	width: 82%;
+  padding: 2px 5px;
+  border: solid 2px black;
+  border-radius: 10px;
+}
+.left-section>.search-bar>p>.search-content:focus{
+  outline: none;
+}
+.left-section>.search-bar>p>.search-icon{
+  float: right;
+  width:28px;
+  height:28px;
+}
+.left-section>.communities-list{
+  height: 250px;
+  padding: 10px;
+  background-color: #FAFAFA;
+  border: 2px solid black;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+.result-section{
+  padding: 0 5px;
+}
+.result-section>table{
+  border: 2px solid #DDDDDD;
+}
+.result-section>table>thead{
+  display: block;
+}
+.result-section>table>thead>tr{
+  display: block;
+  width: 100%;
+}
+.result-section>table>thead>tr>th:nth-of-type(1){
+  display: block;
+  width: 29%;
+  float: left;
+  border-right: 2px solid #DDDDDD;
+  background-color: #D5D5D5;
+}
+.result-section>table>thead>tr>th:nth-of-type(2){
+  display: block;
+  width: 71%;
+  float: left;
+  background-color: #D5D5D5;
+}
+.result-section>table>thead>tr>th>span:hover{
+  cursor: pointer;
+}
+.result-section>table>tbody{
+  display: block;
+  transform: translate(0, -1px);
+  height: 267px;
+  clear: left;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.result-section>table>tbody>tr{
+  width: 100%;
+  border: 1px solid #DDDDDD;
+}
+.result-section>table>tbody>tr:nth-of-type(even){
+  background-color: #EFEFEF;
+}
+.result-section>table>tbody>tr>td:nth-of-type(1){
+  width: 30%;
+  height: auto;
+  clear: left;
+  float: left;
+  border-right: 1px solid #DDDDDD;
+}
+.result-section>table>tbody>tr>td:nth-of-type(2){
+  width: 70%;
+  height: auto;
+  float: left;
+  border-left: 1px solid #DDDDDD;
+  transform: translate(-1px, 0);
+}

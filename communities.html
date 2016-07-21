@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Communities</title>
+	<script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/main.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/communities.css">
+	<link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+
+</head>
+	<body ng-app="CommunitiesApp" >
+		<div class="container" ng-controller="SearchCtrl">
+			<div class="page-header">
+				<h1>GWU Data Insights</h1>
+			</div>
+			<div class="col-lg-12">
+				<h3>Communities</h3>A community is a grouping that corresponds to a functional area or department. A community can contain sub communities.
+			</div>
+			<div class="col-lg-4 left-section">
+				<div class="search-bar">
+					<p>
+						<input type="text" class="search-content" ng-model="query" />
+						<img src="images/icons/magnifying_mirror.png" class="search-icon"/>
+					</p>
+				</div>
+				<div class="communities-list">
+					<ul>
+						<li ng-repeat="result in results | orderBy:'name':false track by $index">
+							{{result.name}}
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-lg-8 result-section">
+				<table class="table">
+					<thead>
+						<tr >
+							<th><span ng-click="orderField='name'; isReverse=!isReverse">Name</span></th>
+							<th><span ng-click="orderField='description'; isReverse=!isReverse">Description</span></th>
+						</tr>
+					</thead>
+					<tbody ng-init="orderField='name'; isReverse=false">
+						<tr ng-repeat="result in results | filter:query | orderBy:orderField:isReverse track by $index" >
+							<td>{{result.name}}</td>
+							<td>{{result.description}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
