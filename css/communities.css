@@ -8,7 +8,7 @@ h3{
   margin-top: 0px;
 }
 .container{
-	width:60%;
+	width:80%;
 }
 .left-section>.search-bar{
   height: 50px;
@@ -37,18 +37,46 @@ h3{
   height:28px;
 }
 .left-section>.communities-list{
-  height: 250px;
-  padding: 10px;
-  background-color: #FAFAFA;
+  height: 280px;
+  padding: 6px 0 0 10px;
+  background-color: #EFEFEF;
   border: 2px solid black;
+  font-size: 12px;
   border-radius: 5px;
   overflow-y: auto;
+  overflow-x: hidden;
+}
+.left-section>.communities-list ul{
+  border-radius: 20px;
+  list-style-type: none;
+  padding-left: 20px;
+}
+.left-section>.communities-list>ul{
+  padding-left: 0px;
+}
+.left-section>.communities-list>ul>li{
+  border-bottom: 1px solid #CFCFCF;
+}
+.left-section>.communities-list>ul ul:visible{
+  border: 1px solid lavender;
+}
+.left-section>.communities-list>ul ul{
+  display: none;
+}
+.left-section>.communities-list ul>li>span>img, .left-section>.communities-list ul>li>span:nth-of-type(2){
+  cursor: pointer;
+}
+.left-section>.communities-list ul>li>span:nth-of-type(1){
+  display: inline-block;
+  width: 10px;
+  height: 10px;
 }
 .result-section{
   padding: 0 5px;
 }
 .result-section>table{
   border: 2px solid #DDDDDD;
+  border-collapse: collapse;
 }
 .result-section>table>thead{
   display: block;
@@ -61,43 +89,48 @@ h3{
   display: block;
   width: 29%;
   float: left;
-  border-right: 2px solid #DDDDDD;
+  border: 2px solid #DDDDDD;
   background-color: #D5D5D5;
 }
 .result-section>table>thead>tr>th:nth-of-type(2){
   display: block;
   width: 71%;
   float: left;
+  border: 2px solid #DDDDDD;
   background-color: #D5D5D5;
 }
-.result-section>table>thead>tr>th>span:hover{
+.result-section>table>thead>tr>th:hover{
   cursor: pointer;
 }
 .result-section>table>tbody{
   display: block;
   transform: translate(0, -1px);
-  height: 267px;
+  width: 100%;
+  height: 370px;
   clear: left;
   overflow-y: scroll;
   overflow-x: hidden;
 }
 .result-section>table>tbody>tr{
+  display: block;
   width: 100%;
-  border: 1px solid #DDDDDD;
+  border-right: 1px solid #DDDDDD;
+  border-bottom: 1px solid #DDDDDD;
+  overflow:auto;
 }
 .result-section>table>tbody>tr:nth-of-type(even){
   background-color: #EFEFEF;
 }
 .result-section>table>tbody>tr>td:nth-of-type(1){
+  display: block;
   width: 30%;
-  height: auto;
   clear: left;
   float: left;
   border-right: 1px solid #DDDDDD;
 }
 .result-section>table>tbody>tr>td:nth-of-type(2){
+  display: block;
   width: 70%;
-  height: auto;
   float: left;
   border-left: 1px solid #DDDDDD;
   transform: translate(-1px, 0);

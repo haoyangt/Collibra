@@ -2,8 +2,8 @@
 <html>
 <head>
 	<title>Communities</title>
-	<script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+	<script src="js/jquery-2.2.4.js"></script>
+	<script src="js/angular.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/main.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
@@ -28,8 +28,27 @@
 				</div>
 				<div class="communities-list">
 					<ul>
-						<li ng-repeat="result in results | orderBy:'name':false track by $index">
-							{{result.name}}
+						<li ng-repeat="result1 in restructureResult | orderBy:'title':false track by $index">
+							<span><img src="images/icons/arrow_icon_right.png" width="10px" height="10px" class="foldIcon" ng-show="result1.content"></span>
+							<span ng-click="updateSearchBox(result1.title)">{{result1.title}}</span>
+							<ul>
+								<li ng-repeat="result2 in result1.content | orderBy:'title':false track by $index">
+									<span><img src="images/icons/arrow_icon_right.png" width="10px" height="10px" class="foldIcon" ng-show="result2.content"></span>
+									<span ng-click="updateSearchBox(result2.title)">{{result2.title}}</span>
+									<ul>
+										<li ng-repeat="result3 in result2.content | orderBy:'title':false track by $index">
+											<span><img src="images/icons/arrow_icon_right.png" width="10px" height="10px" class="foldIcon" ng-show="result3.content"></span>
+											<span ng-click="updateSearchBox(result3.title)">{{result3.title}}</span>
+											<ul>
+												<li ng-repeat="result4 in result3.content | orderBy:'title':false track by $index">
+													<span><img src="images/icons/arrow_icon_right.png" width="10px" height="10px" class="foldIcon" ng-show="result4.content"></span>
+													<span ng-click="updateSearchBox(result4.title)">{{result4.title}}</span>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</div>
@@ -38,18 +57,25 @@
 				<table class="table">
 					<thead>
 						<tr >
-							<th><span ng-click="orderField='name'; isReverse=!isReverse">Name</span></th>
-							<th><span ng-click="orderField='description'; isReverse=!isReverse">Description</span></th>
+							<th ng-click="orderField='name.val'; isReverse=!isReverse"><span>Name</span></th>
+							<th ng-click="orderField='attributes[0].val'; isReverse=!isReverse"><span>Description</span></th>
 						</tr>
 					</thead>
-					<tbody ng-init="orderField='name'; isReverse=false">
-						<tr ng-repeat="result in results | filter:query | orderBy:orderField:isReverse track by $index" >
-							<td>{{result.name}}</td>
-							<td>{{result.description}}</td>
+					<tbody ng-init="orderField='name.val'; isReverse=false">
+						<tr ng-repeat="result in results | filter:{name.val: query} | orderBy:orderField:isReverse track by $index" >
+							<td>{{result.name.val}}</td>
+							<td>{{result.attributes[0].val}}<span ng-hide="result.attributes[0].val"></span></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
+			<ul>
+				<li ng-repeat="data in hahas">{{data.title}}
+					<ul>
+						<li ng-repeat="i in data.content">{{i}}</li>
+					</ul>
+				</li>
+			</ul>
 		</div>
 	</body>
 </html>
