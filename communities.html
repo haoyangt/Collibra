@@ -51,8 +51,8 @@
 			</thead>
 			<tbody ng-init="orderField='name.val'; isReverse=false">
 				<tr ng-repeat="result in results | filter:{name.val: query} | orderBy:orderField:isReverse track by $index" >
-					<td>{{result.name.val}}</td>
-					<td>{{result.attributes[0].val}}<span ng-hide="result.attributes[0].val"></span></td>
+					<td><a href="https://gwu.collibra.com/community/{{result.name.id}}" target="_blank">{{result.name.val}}</a></td>
+					<td>{{result.attributes[0].val}}</td>
 				</tr>
 			</tbody>
 		</table>

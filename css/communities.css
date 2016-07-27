@@ -135,3 +135,9 @@ h3{
   border-left: 1px solid #DDDDDD;
   transform: translate(-1px, 0);
 }
+.result-section>table>tbody>tr>td>a{
+  color: black;
+}
+.result-section>table>tbody>tr>td>a:focus{
+  text-decoration: none;
+}

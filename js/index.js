@@ -74,7 +74,6 @@ indexApp.controller('HomeCtrl', function($scope, $http, $location, $rootScope){
 		}).then(
 			function successCallback(response) {
 			    $scope.results = response.data.results;
-			    console.log($scope.results);
 			    angular.forEach($scope.results, function(result){
 			    	if(result.context.restUrl != ''){
 			    		$http({
@@ -85,7 +84,7 @@ indexApp.controller('HomeCtrl', function($scope, $http, $location, $rootScope){
 			    				if(response.data.communityReference)
 							    	result.higherReference = response.data.communityReference.name;
 							}, function errorCallback(response) {
-								console.log('ERROR');
+
 							}
 						);
 			    	}
@@ -151,7 +150,7 @@ indexApp.controller('CommunitiesCtrl', function($scope, $http, $location, $rootS
 					}
 				}
 			}
-		   	console.log($scope.restructureResult);
+			console.log($scope.results);
 		}, function errorCallback(response) {
 			$location.path("/Collibra/");
 			$rootScope.msg="Time out! Please log in and try again!";
