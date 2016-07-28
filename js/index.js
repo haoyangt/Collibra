@@ -14,6 +14,9 @@ indexApp.config(function($routeProvider) {
       when('/login', {
         templateUrl: 'login.html'
       }).
+      when('/report_catalog', {
+        templateUrl: 'report_catalog.html'
+      }).
       otherwise({
         redirectTo: '/'
       });
@@ -26,7 +29,7 @@ indexApp.run( function($rootScope, $location, $http) {
     	var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":[],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","comment","attributes"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":1,"query":"whatever"};			
 		$http({
 				method: 'POST',
-				url: 'https://gwu.collibra.com/rest/1.0/search',
+				url: 'https://gwu.collibra.com/rest/latest/search',
 				contentType: "application/json",
 				data: JSON.stringify(data)
 		}).then(
@@ -68,7 +71,7 @@ indexApp.controller('HomeCtrl', function($scope, $http, $location, $rootScope){
 		var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":[],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","comment","attributes"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":20,"query":$scope.searchContent};			
 		$http({
 				method: 'POST',
-				url: 'https://gwu.collibra.com/rest/1.0/search',
+				url: 'https://gwu.collibra.com/rest/latest/search',
 				contentType: "application/json",
 				data: JSON.stringify(data)
 		}).then(
@@ -99,10 +102,10 @@ indexApp.controller('HomeCtrl', function($scope, $http, $location, $rootScope){
 
 indexApp.controller('CommunitiesCtrl', function($scope, $http, $location, $rootScope){
 
-	var data = {"filter":{"category":["CO"],"includeMeta":false,"type":{"asset":[],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"name","sort":"asc"},"offset":0,"limit":1000,"query":"*"};
+	var data = {"filter":{"category":["CO"],"includeMeta":false,"type":{"asset":[],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":1000,"query":"*"};
 	$http({
 		method: 'POST',
-		url: 'https://gwu.collibra.com/rest/1.0/search',
+		url: 'https://gwu.collibra.com/rest/latest/search',
 		contentType: "application/json",
 		data: JSON.stringify(data)
 	}).then(
@@ -150,7 +153,6 @@ indexApp.controller('CommunitiesCtrl', function($scope, $http, $location, $rootS
 					}
 				}
 			}
-			console.log($scope.results);
 		}, function errorCallback(response) {
 			$location.path("/Collibra/");
 			$rootScope.msg="Time out! Please log in and try again!";
@@ -173,7 +175,7 @@ indexApp.controller('LoginCtrl', function($scope, $http, $location, $rootScope){
 		var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":[],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","comment","attributes"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":1,"query":"age"};			
 		$http({
 			method: 'POST',
-			url: 'https://gwu.collibra.com/rest/1.0/search',
+			url: 'https://gwu.collibra.com/rest/latest/search',
 			contentType: "application/json",
 			data: JSON.stringify(data)
 		}).then(
@@ -188,3 +190,42 @@ indexApp.controller('LoginCtrl', function($scope, $http, $location, $rootScope){
 	}
 });
   
+
+indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
+	//Get communities 
+	$http({
+		method: 'GET',
+		url: 'https://gwu.collibra.com/rest/1.0/community/all',
+		contentType: "application/json"
+	}).then(
+		function successCallback(response) {
+			$scope.communities = response.data.communityReference;
+			console.log($scope.communities);
+		}, function errorCallback(response) {
+			$location.path("/Collibra/");
+			$rootScope.msg="Time out! Please log in and try again!";
+		}
+	);
+
+	//Get report catalog
+	var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":["00000000-0000-0000-0000-000000031102"],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":1000,"query":"*"};
+	$http({
+		method: 'POST',
+		url: 'https://gwu.collibra.com/rest/latest/search',
+		contentType: "application/json",
+		data: JSON.stringify(data)
+	}).then(
+		function successCallback(response) {
+			$scope.results = response.data.results;
+			$scope.loading_icon_display = false;
+		}, function errorCallback(response) {
+			$location.path("/Collibra/");
+			$rootScope.msg="Time out! Please log in and try again!";
+		}
+	);
+
+
+	$scope.scrollTop = function(){
+		$(".table>tbody").animate({scrollTop: 0}, "fast");
+	}
+});
