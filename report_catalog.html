@@ -1,0 +1,58 @@
+
+<link rel="stylesheet" type="text/css" href="css/report_catalog.css">
+<div class="container" ng-controller="ReportCatalogCtrl">
+	<div class="page-header">
+		<h1>GWU Data Insights</h1>
+	</div>
+	<div class="col-lg-12">
+		<h3>Report Catalog</h3>The Report Catalog is a repository  of a vast library of reports and visualizations, providing the ability to search and filter.
+	</div>
+	<div class="col-lg-3 left-section">
+		<div class="search-bar">
+			<p>
+				<input type="text" class="search-content" ng-model="query" ng-change="currentPage=1" />
+				<img src="images/icons/magnifying_mirror.png" class="search-icon"/>
+			</p>
+		</div>
+		<div class="communities-list">
+			<ul>
+				<li ng-repeat="community in communities">{{community.name}}</li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-lg-9 result-section" ng-init="currentPage=1">
+		<div class="loading" ng-init="loading_icon_display=true" ng-show="loading_icon_display">
+			<img src="images/icons/loading.gif" />
+		</div>
+		<table class="table">
+			<thead>
+				<tr >
+					<th ng-click="orderField='name.val'; isReverse=!isReverse; scrollTop(); currentPage=1"><span>Name</span></th>
+					<th ng-click="orderField='description'; isReverse=!isReverse; scrollTop(); currentPage=1"><span>Description</span></th>
+					<th ng-click="orderField='status'; isReverse=!isReverse; scrollTop(); currentPage=1"><span>Status</span></th>
+					<th ng-click="orderField='reportType'; isReverse=!isReverse; scrollTop(); currentPage=1"><span>Report Type</span></th>
+					<th ng-click="orderField='context.val'; isReverse=!isReverse; scrollTop(); currentPage=1"><span>Community</span></th>
+					<th><span>Link</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="result in results | filter:{name.val: query} |orderBy:orderField:isReverse track by $index " ng-if="$index>=(currentPage-1)*10 && $index<currentPage*10">
+					<td>{{result.name.val}}</td>
+					<td><span ng-repeat="attribute in result.attributes track by $index" ng-if="attribute.type=='Description'">{{result.description=attribute.val;""}}{{attribute.val}}</span></td>
+					<td>{{result.status}}</td>
+					<td><span ng-repeat="attribute in result.attributes track by $index" ng-if="attribute.type=='Reporting System'">{{result.reportType=attribute.val;""}}{{attribute.val}}</span></td>
+					<td>{{result.context.val}}</td>
+					<td><a href="https://gwu.collibra.com/term/{{result.name.id}}" target="_blank">View</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="page">
+			<button class="btn btn-primary" ng-click="currentPage=currentPage-1; scrollTop()" ng-disabled="currentPage==1">LAST</button>
+			<span ng-show="currentPage*10 >= (results | filter:{name.val: query}).length">{{(results | filter:{name.val: query}).length}}</span>
+			<span ng-show="currentPage*10 < (results | filter:{name.val: query}).length">{{currentPage*10}}</span>
+			<span>/</span>
+			<span>{{(results | filter:{name.val: query}).length}} </span>
+			<button class="btn btn-primary" ng-disabled="currentPage*10 >= (results | filter:{name.val: query}).length" ng-click="currentPage=currentPage+1; scrollTop()">NEXT</button>
+		</div>
+	</div>
+</div>

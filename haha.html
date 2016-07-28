@@ -26,24 +26,11 @@
 			// };
 			// xhr.send();
 		});
-		var data = {"query":"age",
-					"filter":{
-						"category":[
-						   "CO",
-						   "VC",
-						   "UR",
-						   "GR",
-						   "TE",
-						   "SS"
-						]
-					},
-					"fields":[
-					   "name"
-					]};
+		var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":["00000000-0000-0000-0000-000000031102"],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":20,"query":"*"}
 		$("input:eq(1)").click(function(){
 			$.ajax({
 				type: "POST",
-				url: "https://gwu.collibra.com/rest/1.0/search",
+				url: "https://gwu.collibra.com/rest/latest/search",
 				contentType: "application/json",
 				data: JSON.stringify(data),
 				dataType: "json",
