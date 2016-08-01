@@ -1,6 +1,16 @@
-
 <link rel="stylesheet" type="text/css" href="css/report_catalog.css">
+
 <div class="container" ng-controller="ReportCatalogCtrl">
+
+<!-- Traverse the array to set the value of "report type" and "description" for each result-->
+<span ng-show="false" ng-repeat="result in results">
+	<span ng-repeat="attribute in result.attributes track by $index">
+		<span ng-if="attribute.type=='Reporting System'">{{result.reportType=attribute.val;""}}</span>
+		<span ng-if="attribute.type=='Description'">{{result.description=attribute.val;""}}</span>
+	</span>
+</span>
+
+
 	<div class="page-header">
 		<h1>GWU Data Insights</h1>
 	</div>
@@ -8,16 +18,48 @@
 		<h3>Report Catalog</h3>The Report Catalog is a repository  of a vast library of reports and visualizations, providing the ability to search and filter.
 	</div>
 	<div class="col-lg-3 left-section">
-		<div class="search-bar">
-			<p>
-				<input type="text" class="search-content" ng-model="query" ng-change="currentPage=1" />
-				<img src="images/icons/magnifying_mirror.png" class="search-icon"/>
-			</p>
+		<div class="search">
+			<div class="btn-group search-type" data-toggle="buttons">
+				<label class="btn btn-secondary active">
+			    	<input type="radio" name="options" id="option1" autocomplete="off" checked>All
+			  	</label>
+			  	<label class="btn btn-secondary">
+			    	<input type="radio" name="options" id="option2" autocomplete="off">Subscribed
+			  	</label>
+			</div>
+			<div class="search-bar">
+				<p>
+					<input type="text" class="search-content" ng-model="query" ng-change="currentPage=1" />
+					<img src="images/icons/magnifying_mirror.png" class="search-icon"/>
+				</p>
+			</div>
 		</div>
-		<div class="communities-list">
-			<ul>
-				<li ng-repeat="community in communities">{{community.name}}</li>
-			</ul>
+		<div class="report_status">
+			<p class="report_status-title">Report Status</p>
+			<div class="report_status-list" >
+				<span><input type="checkbox" ng-true-value="All" ng-init="report_status_selected[0]=true; selection_all_1=true" ng-model="report_status_selected[0]" ng-checked="report_status_selected[0]" ng-disabled="selection_all_1">All</span><br>
+				<span ng-repeat="result in results | deleteDuplicate: 'status' | orderBy:'status' track by $index">
+					<input type="checkbox" ng-true-value="{{result.status}}" ng-model="report_status_selected[$index+1]" ng-change="changeCheckedBox(1,$index+1)"> {{result.status}}
+				</span>
+			</div>	
+		</div>
+		<div class="report_types">
+			<p class="report_types-title">Report Types</p>
+			<div class="report_types-list" >
+				<span><input type="checkbox" ng-true-value="All" ng-init="report_types_selected[0]=true; selection_all_2=true" ng-model="report_types_selected[0]" ng-checked="report_types_selected[0]" ng-disabled="selection_all_2">All</span><br>
+				<span ng-repeat="result in results | deleteDuplicate: 'reportType' | orderBy:'reportType' track by $index">
+					<input type="checkbox" ng-true-value="{{result.reportType}}" ng-model="report_types_selected[$index+1]" ng-change="changeCheckedBox(2,$index+1)"> {{result.reportType}}
+				</span>
+			</div>	
+		</div>
+		<div class="communities">
+			<p class="communities-title">Communities</p>
+			<div class="communities-list" >
+				<span><input type="checkbox" ng-init="communities_selected[0]=true; selection_all_3=true" ng-model="communities_selected[0]" ng-checked="communities_selected[0]" ng-disabled="selection_all_3">All</span><br>
+				<span ng-repeat="result in results | deleteDuplicateForCommunities | orderBy:'context.val' track by $index">
+					<input type="checkbox" ng-true-value="{{result.context.val}}" ng-model="communities_selected[$index+1]" ng-change="changeCheckedBox(3,$index+1)"> {{result.context.val}}<br>
+				</span>
+			</div>	
 		</div>
 	</div>
 	<div class="col-lg-9 result-section" ng-init="currentPage=1">
@@ -36,11 +78,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="result in results | filter:{name.val: query} |orderBy:orderField:isReverse track by $index " ng-if="$index>=(currentPage-1)*10 && $index<currentPage*10">
+				<tr ng-repeat="result in filterd = (results | filter:{name.val: query} | resultFilter:report_status_selected:report_types_selected:communities_selected |orderBy:orderField:isReverse) track by $index " ng-if="$index>=(currentPage-1)*10 && $index<currentPage*10">
 					<td>{{result.name.val}}</td>
-					<td><span ng-repeat="attribute in result.attributes track by $index" ng-if="attribute.type=='Description'">{{result.description=attribute.val;""}}{{attribute.val}}</span></td>
+					<td>{{result.description}}</td>
 					<td>{{result.status}}</td>
-					<td><span ng-repeat="attribute in result.attributes track by $index" ng-if="attribute.type=='Reporting System'">{{result.reportType=attribute.val;""}}{{attribute.val}}</span></td>
+					<td>{{result.reportType}}</td>
 					<td>{{result.context.val}}</td>
 					<td><a href="https://gwu.collibra.com/term/{{result.name.id}}" target="_blank">View</a></td>
 				</tr>
@@ -48,11 +90,11 @@
 		</table>
 		<div class="page">
 			<button class="btn btn-primary" ng-click="currentPage=currentPage-1; scrollTop()" ng-disabled="currentPage==1">LAST</button>
-			<span ng-show="currentPage*10 >= (results | filter:{name.val: query}).length">{{(results | filter:{name.val: query}).length}}</span>
-			<span ng-show="currentPage*10 < (results | filter:{name.val: query}).length">{{currentPage*10}}</span>
+			<span ng-show="currentPage*10 >= filterd.length">{{filterd.length}}</span>
+			<span ng-show="currentPage*10 < filterd.length">{{currentPage*10}}</span>
 			<span>/</span>
-			<span>{{(results | filter:{name.val: query}).length}} </span>
-			<button class="btn btn-primary" ng-disabled="currentPage*10 >= (results | filter:{name.val: query}).length" ng-click="currentPage=currentPage+1; scrollTop()">NEXT</button>
+			<span>{{filterd.length}} </span>
+			<button class="btn btn-primary" ng-disabled="currentPage*10 >= filterd.length" ng-click="currentPage=currentPage+1; scrollTop()">NEXT</button>
 		</div>
 	</div>
 </div>

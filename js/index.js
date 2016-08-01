@@ -192,20 +192,9 @@ indexApp.controller('LoginCtrl', function($scope, $http, $location, $rootScope){
   
 
 indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
-	//Get communities 
-	$http({
-		method: 'GET',
-		url: 'https://gwu.collibra.com/rest/1.0/community/all',
-		contentType: "application/json"
-	}).then(
-		function successCallback(response) {
-			$scope.communities = response.data.communityReference;
-			console.log($scope.communities);
-		}, function errorCallback(response) {
-			$location.path("/Collibra/");
-			$rootScope.msg="Time out! Please log in and try again!";
-		}
-	);
+	$scope.report_status_selected = {};
+	$scope.report_types_selected = {};
+	$scope.communities_selected = {};
 
 	//Get report catalog
 	var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":["00000000-0000-0000-0000-000000031102"],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":1000,"query":"*"};
@@ -228,4 +217,104 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 	$scope.scrollTop = function(){
 		$(".table>tbody").animate({scrollTop: 0}, "fast");
 	}
+
+	$scope.changeCheckedBox = function(type, id){
+		switch(type){
+			case 1:
+				if($scope.report_status_selected[id]){
+					$scope.report_status_selected[0] = false;
+					$scope.selection_all_1 = false;
+				}else{
+					var updateAllSelection = true;
+					for(var i=1; i<$scope.report_status_selected.length; i++){
+						if($scope.report_status_selected[i] != false){
+							updateAllSelection = false;
+							alert();
+						}
+
+					}
+					console.log($scope.report_status_selected.length);
+					console.log($scope.report_status_selected[3] != false);
+					if(updateAllSelection){
+						$scope.report_status_selected[0] = true;
+						$scope.selection_all_1 = true;
+					}
+				}
+				break;
+			case 2:
+				if($scope.report_types_selected[id]){
+					$scope.report_types_selected[0] = false;
+					$scope.selection_all_2 = false;
+				}else{
+
+				}
+				break;
+			case 3:
+				if($scope.communities_selected[id]){
+					$scope.communities_selected[0] = false;
+					$scope.selection_all_3 = false;
+				}else{
+
+				}
+				break;
+		}
+	}
+});
+
+//Filters
+indexApp.filter("deleteDuplicate", function(){
+	return function(collection, keyname) {
+    	var output = [], 
+        keys = [];
+	    angular.forEach(collection, function(item) {
+	        var key = item[keyname];
+	        if(keys.indexOf(key) === -1) {
+	            keys.push(key);
+	            output.push(item);
+	        }
+	    });
+	    return output;
+    };
+});
+indexApp.filter("deleteDuplicateForCommunities", function(){
+	return function(collection) {
+    	var output = [], 
+    	keys = [];
+	    angular.forEach(collection, function(item) {
+	        var key = item.context.val;
+	        if(keys.indexOf(key) === -1) {
+	            keys.push(key);
+	            output.push(item);
+	        }
+	    });
+    return output;
+    };
+});
+indexApp.filter("resultFilter", function(){
+	return function(collection, report_status_selected, report_types_selected, communities_selected) {
+    	var output = [];
+    	if(report_status_selected[0] && report_types_selected[0] && communities_selected[0])
+    		return collection;
+	    angular.forEach(collection, function(item) {
+    		if(!report_status_selected[0]){
+		        angular.forEach(report_status_selected, function(item2) {
+		        	if(item.status == item2)
+		        		output.push(item);
+		        });
+			}
+			if(!report_types_selected[0]){
+		        angular.forEach(report_types_selected, function(item2) {
+		        	if(item.reportType == item2)
+		        		output.push(item);
+		        });
+		    }
+	        if(!communities_selected[0]){
+		        angular.forEach(communities_selected, function(item2) {
+		        	if(item.context.val == item2)
+		        		output.push(item);
+		        });
+		    }
+	    });
+    	return output;
+    };
 });

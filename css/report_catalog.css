@@ -7,52 +7,67 @@ h1{
 h3{
   margin-top: 0px;
 }
+.btn.btn-secondary{
+  background-color: #BFBFBF;
+}
+.btn.btn-secondary.active{
+  background-color: #989898;
+}
 .container{
 	width:90%;
 }
-.left-section>.search-bar{
-  height: 50px;
-  padding: 10px;
-  margin-top: 0px;
-  background-color: #FAFAFA;
+.left-section>.search{
   border: 2px solid lavender;
-  border-radius: 5px;
+  border-radius: 10px;
+  padding: 0 10px;
+  margin-top: 0;
+  background-color: #EFEFEF;
 }
-.left-section>.search-bar>p{
+.left-section>.search>.search-bar{
+  margin-top: 0px;
+}
+.left-section>.search>.search-bar>p{
   margin: 0 auto;
   height: 30px;
 }
-.left-section>.search-bar>p>.search-content{
+.left-section>.search>.search-bar>p>.search-content{
 	width: 82%;
   padding: 2px 5px;
-  border: solid 2px black;
+  border: solid 2px #999;
   border-radius: 10px;
 }
-.left-section>.search-bar>p>.search-content:focus{
+.left-section>.search>.search-bar>p>.search-content:focus{
   outline: none;
 }
-.left-section>.search-bar>p>.search-icon{
+.left-section>.search>.search-bar>p>.search-icon{
   float: right;
   width:28px;
   height:28px;
 }
-.left-section>.communities-list{
-  height: 280px;
-  padding: 6px 0 0 10px;
+.left-section>.report_status, .left-section>.report_types, .left-section>.communities{
+  border: 2px solid lavender;
+  margin-top: 10px;
+  padding: 0 10px;
   background-color: #EFEFEF;
-  border: 2px solid black;
-  font-size: 12px;
   border-radius: 5px;
+}
+.left-section>.report_status>.report_status-title, .left-section>.report_types>.report_types-title, .left-section>.communities>.communities-title{
+  width: 100%;
+  margin: 0 auto;
+  font-weight: bold;
+  border-bottom: 2px solid white;
+}
+.left-section>.report_status>.report_status-list, .left-section>.report_types>.report_types-list, .left-section>.communities>.communities-list{
+  font-size: 12px;
   overflow-y: auto;
   overflow-x: hidden;
 }
-.left-section>.communities-list ul{
-  border-radius: 20px;
-  list-style-type: none;
-  padding-left: 20px;
+.left-section>.report_status>.report_status-list>span, .left-section>.report_types>.report_types-list>span{
+  min-width: 50%;
+  display: inline-block;
 }
-.left-section>.communities-list>ul{
-  padding-left: 0px;
+.left-section>.communities>.communities-list{
+  height: 280px;
 }
 .result-section{
   position: relative;
@@ -164,5 +179,6 @@ h3{
   text-decoration: none;
 }
 .result-section>.page{
-  margin: 15px 20px 0;
+  float: right;
+  margin: 15px;
 }
