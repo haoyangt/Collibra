@@ -37,7 +37,7 @@
 		<div class="report_status">
 			<p class="report_status-title">Report Status</p>
 			<div class="report_status-list" >
-				<span><input type="checkbox" ng-true-value="All" ng-init="report_status_selected[0]=true; selection_all_1=true" ng-model="report_status_selected[0]" ng-checked="report_status_selected[0]" ng-disabled="selection_all_1">All</span><br>
+				<span><input type="checkbox" ng-true-value="All" ng-init="report_status_selected[0]=true; disable_selection_all_1=true" ng-model="report_status_selected[0]" ng-change="changeCheckedBox(1,0)" ng-checked="report_status_selected[0]" ng-disabled="disable_selection_all_1">All</span><br>
 				<span ng-repeat="result in results | deleteDuplicate: 'status' | orderBy:'status' track by $index">
 					<input type="checkbox" ng-true-value="{{result.status}}" ng-model="report_status_selected[$index+1]" ng-change="changeCheckedBox(1,$index+1)"> {{result.status}}
 				</span>
@@ -46,8 +46,8 @@
 		<div class="report_types">
 			<p class="report_types-title">Report Types</p>
 			<div class="report_types-list" >
-				<span><input type="checkbox" ng-true-value="All" ng-init="report_types_selected[0]=true; selection_all_2=true" ng-model="report_types_selected[0]" ng-checked="report_types_selected[0]" ng-disabled="selection_all_2">All</span><br>
-				<span ng-repeat="result in results | deleteDuplicate: 'reportType' | orderBy:'reportType' track by $index">
+				<span><input type="checkbox" ng-true-value="All" ng-init="report_types_selected[0]=true; disable_selection_all_2=true" ng-model="report_types_selected[0]" ng-change="changeCheckedBox(2,0)" ng-checked="report_types_selected[0]" ng-disabled="disable_selection_all_2">All</span><br>
+				<span ng-repeat="result in results | deleteDuplicate: 'reportType' | orderBy:'reportType':true track by $index">
 					<input type="checkbox" ng-true-value="{{result.reportType}}" ng-model="report_types_selected[$index+1]" ng-change="changeCheckedBox(2,$index+1)"> {{result.reportType}}
 				</span>
 			</div>	
@@ -55,11 +55,21 @@
 		<div class="communities">
 			<p class="communities-title">Communities</p>
 			<div class="communities-list" >
-				<span><input type="checkbox" ng-init="communities_selected[0]=true; selection_all_3=true" ng-model="communities_selected[0]" ng-checked="communities_selected[0]" ng-disabled="selection_all_3">All</span><br>
+				<span><input type="checkbox" ng-init="communities_selected[0]=true; disable_selection_all_3=true" ng-model="communities_selected[0]" ng-change="changeCheckedBox(3,0)" ng-checked="communities_selected[0]" ng-disabled="disable_selection_all_3">All</span><br>
 				<span ng-repeat="result in results | deleteDuplicateForCommunities | orderBy:'context.val' track by $index">
 					<input type="checkbox" ng-true-value="{{result.context.val}}" ng-model="communities_selected[$index+1]" ng-change="changeCheckedBox(3,$index+1)"> {{result.context.val}}<br>
 				</span>
 			</div>	
+		</div>
+		<div class="rating">
+			<p class="rating-title">Rating</p>
+			<div class="rating-content" ng-init="isNotHovering=true">
+			    <span ng-class="{'selected': rating_score>=5 && isNotHovering}" ng-click="rating_score=5" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
+			    <span ng-class="{'selected': rating_score>=4 && isNotHovering}" ng-click="rating_score=4" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
+			    <span ng-class="{'selected': rating_score>=3 && isNotHovering}" ng-click="rating_score=3" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
+			    <span ng-class="{'selected': rating_score>=2 && isNotHovering}" ng-click="rating_score=2" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
+			    <span ng-class="{'selected': rating_score>=1 && isNotHovering}" ng-click="rating_score=1" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
+			</div>
 		</div>
 	</div>
 	<div class="col-lg-9 result-section" ng-init="currentPage=1">

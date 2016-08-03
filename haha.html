@@ -26,7 +26,7 @@
 			// };
 			// xhr.send();
 		});
-		var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":["00000000-0000-0000-0000-000000031102"],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":20,"query":"*"}
+		var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":["0f30917a-2199-4240-a409-8395aabc7237"],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":99999,"query":"*"}
 		$("input:eq(1)").click(function(){
 			$.ajax({
 				type: "POST",
@@ -46,10 +46,12 @@
 
 		$("input:eq(2)").click(function(){
 			$.ajax({
-				type: "GET",
-				url: "https://gwu.collibra.com/rest/1.0/term/283a9633-9d67-4b6b-97c1-622791c83899",
+				type: "POST",
+				url: "https://gwu.collibra.com/term/116d742c-ceee-4c65-92f1-bfd7d4e104d9?type=TE&region=tabbar-content|region|roles&module=&page-id=70454940-63f5-4263-96a9-c25e3ae988e4",
+				    //  "https://gwu.collibra.com/
+				    // term/bf01e35c-449c-40d0-b2cc-b518d618884c?type=TE&region=tabbar-content|region|roles&module=&page-id=3e5c5d38-6574-41ee-aba1-058bd42da3cf
 				// url: "https://gwu.collibra.com/rest/1.0/hyperlink/business/matched_expressions",
-				dataType: "json",
+				dataType: "html",
 				success: function(t){
 					console.log(t);
 				},

@@ -219,42 +219,81 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 	}
 
 	$scope.changeCheckedBox = function(type, id){
+		$scope.currentPage = 1;
 		switch(type){
 			case 1:
 				if($scope.report_status_selected[id]){
-					$scope.report_status_selected[0] = false;
-					$scope.selection_all_1 = false;
+					if(id == 0){
+						angular.forEach($scope.report_status_selected,function(value, key){
+		                	$scope.report_status_selected[key] = false;
+			            });
+			            $scope.report_status_selected[0] = true;
+						$scope.disable_selection_all_1 = true;
+					}else{
+						$scope.report_status_selected[0] = false;
+						$scope.disable_selection_all_1 = false;
+					}
 				}else{
 					var updateAllSelection = true;
-					for(var i=1; i<$scope.report_status_selected.length; i++){
-						if($scope.report_status_selected[i] != false){
+					angular.forEach($scope.report_status_selected,function(value, key){
+	                	if($scope.report_status_selected[key] != false){
 							updateAllSelection = false;
-							alert();
 						}
-
-					}
-					console.log($scope.report_status_selected.length);
-					console.log($scope.report_status_selected[3] != false);
+		            });
 					if(updateAllSelection){
 						$scope.report_status_selected[0] = true;
-						$scope.selection_all_1 = true;
+						$scope.disable_selection_all_1 = true;
 					}
 				}
 				break;
 			case 2:
 				if($scope.report_types_selected[id]){
-					$scope.report_types_selected[0] = false;
-					$scope.selection_all_2 = false;
+					if(id == 0){
+						angular.forEach($scope.report_types_selected,function(value, key){
+		                	$scope.report_types_selected[key] = false;
+			            });
+			            $scope.report_types_selected[0] = true;
+						$scope.disable_selection_all_2 = true;
+					}else{
+						$scope.report_types_selected[0] = false;
+						$scope.disable_selection_all_2 = false;
+					}
 				}else{
-
+					var updateAllSelection = true;
+					angular.forEach($scope.report_types_selected,function(value, key){
+	                	if($scope.report_types_selected[key] != false){
+							updateAllSelection = false;
+						}
+		            });
+					if(updateAllSelection){
+						$scope.report_types_selected[0] = true;
+						$scope.disable_selection_all_2 = true;
+					}
 				}
 				break;
 			case 3:
 				if($scope.communities_selected[id]){
-					$scope.communities_selected[0] = false;
-					$scope.selection_all_3 = false;
+					if(id == 0){
+						angular.forEach($scope.communities_selected,function(value, key){
+		                	$scope.communities_selected[key] = false;
+			            });
+			            $scope.communities_selected[0] = true;
+						$scope.disable_selection_all_3 = true;
+					}else{
+						$scope.communities_selected[0] = false;
+						$scope.disable_selection_all_3 = false;
+					}
 				}else{
-
+					var updateAllSelection = true;
+					angular.forEach($scope.communities_selected,function(value, key){
+	                	if($scope.communities_selected[key] != false){
+							updateAllSelection = false;
+						}
+		            });
+					if(updateAllSelection){
+						$scope.communities_selected[0] = true;
+						$scope.disable_selection_all_3 = true;
+					}
 				}
 				break;
 		}
@@ -268,6 +307,10 @@ indexApp.filter("deleteDuplicate", function(){
         keys = [];
 	    angular.forEach(collection, function(item) {
 	        var key = item[keyname];
+	        if(key == null){
+	        	key == "";
+	        	item.reportType="UNDEFINED";
+	        }
 	        if(keys.indexOf(key) === -1) {
 	            keys.push(key);
 	            output.push(item);
@@ -296,24 +339,33 @@ indexApp.filter("resultFilter", function(){
     	if(report_status_selected[0] && report_types_selected[0] && communities_selected[0])
     		return collection;
 	    angular.forEach(collection, function(item) {
+	    	var pass1=false, pass2=false, pass3=false;
     		if(!report_status_selected[0]){
 		        angular.forEach(report_status_selected, function(item2) {
-		        	if(item.status == item2)
-		        		output.push(item);
+		        	if(!pass1 && item.status == item2)
+		        		pass1=true;
 		        });
+			}else{
+				pass1 = true;
 			}
-			if(!report_types_selected[0]){
+			if(pass1 && !report_types_selected[0]){
 		        angular.forEach(report_types_selected, function(item2) {
-		        	if(item.reportType == item2)
-		        		output.push(item);
+		        	if(!pass2 && item.reportType == item2 )
+		        		pass2=true;
 		        });
+		    }else if(report_types_selected[0]){
+		    	pass2 = true;
 		    }
-	        if(!communities_selected[0]){
+	        if(pass1 && pass2 && !communities_selected[0]){
 		        angular.forEach(communities_selected, function(item2) {
-		        	if(item.context.val == item2)
-		        		output.push(item);
+		        	if(!pass3 && item.context.val == item2)
+		        		pass3=true;
 		        });
+		    }else if(communities_selected[0]){
+		    	pass3 = true;
 		    }
+		    if(pass1 && pass2 & pass3)
+		    	output.push(item);
 	    });
     	return output;
     };

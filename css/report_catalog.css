@@ -44,31 +44,62 @@ h3{
   width:28px;
   height:28px;
 }
-.left-section>.report_status, .left-section>.report_types, .left-section>.communities{
+.left-section>.report_status,
+.left-section>.report_types, .left-section>.communities,
+.left-section>.rating{
   border: 2px solid lavender;
   margin-top: 10px;
   padding: 0 10px;
   background-color: #EFEFEF;
   border-radius: 5px;
 }
-.left-section>.report_status>.report_status-title, .left-section>.report_types>.report_types-title, .left-section>.communities>.communities-title{
+.left-section>.report_status>.report_status-title,
+.left-section>.report_types>.report_types-title,
+.left-section>.communities>.communities-title,
+.left-section>.rating>.rating-title{
   width: 100%;
   margin: 0 auto;
   font-weight: bold;
   border-bottom: 2px solid white;
 }
-.left-section>.report_status>.report_status-list, .left-section>.report_types>.report_types-list, .left-section>.communities>.communities-list{
+.left-section>.report_status>.report_status-list,
+.left-section>.report_types>.report_types-list,
+.left-section>.communities>.communities-list{
   font-size: 12px;
   overflow-y: auto;
   overflow-x: hidden;
 }
-.left-section>.report_status>.report_status-list>span, .left-section>.report_types>.report_types-list>span{
+.left-section>.report_status>.report_status-list>span,
+.left-section>.report_types>.report_types-list>span{
   min-width: 50%;
   display: inline-block;
 }
 .left-section>.communities>.communities-list{
   height: 280px;
 }
+
+.left-section>.rating>.rating-content{
+  width: 12.5em;
+  margin: 0 auto;
+  overflow: auto;
+}
+.left-section>.rating>.rating-content>input{
+  display: none;
+}
+.left-section>.rating>.rating-content>span{
+  font-size: 3em;
+  line-height: 1.1em;
+  display: inline-block;
+  float: right;
+}
+.left-section>.rating>.rating-content>span:hover,
+.left-section>.rating>.rating-content>span:hover ~ span,
+.left-section>.rating>.rating-content>span.selected{
+  color: gold;
+  cursor: pointer;
+}
+
+
 .result-section{
   position: relative;
   padding: 0 5px;
