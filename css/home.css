@@ -40,7 +40,7 @@ h1{
   font-style: italic;
   color: #BFBFBF;
 }
-.search-result>.result-detail>a){
+.search-result>.result-detail>a{
   text-decoration: none;
   color: #5D71D9;
   cursor: pointer;
@@ -56,30 +56,30 @@ h1{
   margin: 1%;
   padding: 5px;
   color: #fff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+  background-color: #449d44;
+  border-color: #255625;
   border-radius: 5px;
   text-align: center;
   display:table;
   float: left;
 }
 .links>div:focus {
- color: #fff;
- background-color: #449d44;
- border-color: #255625;
- text-decoration: none;
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+  text-decoration: none;
 }
 .links>div:hover {
- color: #fff;
- background-color: #449d44;
- border-color: #398439;
- text-decoration: none;
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+  text-decoration: none;
 }
 .links>div:active{
- color: #fff;
- background-color: #449d44;
- border-color: #398439;
- text-decoration: none;
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+  text-decoration: none;
 }
 .links>div>a{
   display:table-cell;

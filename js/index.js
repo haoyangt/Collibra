@@ -298,6 +298,25 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 				break;
 		}
 	}
+
+	$scope.clearFilters = function(){
+		$scope.query = '';
+		$scope.report_status_selected[0]=true;
+		$scope.report_types_selected[0]=true;
+		$scope.communities_selected[0]=true;
+		$scope.disable_selection_all_1=true;
+		$scope.disable_selection_all_2=true;
+		$scope.disable_selection_all_3=true;
+		var report_status_selected_length = Object.keys($scope.report_status_selected)[Object.keys($scope.report_status_selected).length-1];
+		var report_types_selected_length = Object.keys($scope.report_types_selected)[Object.keys($scope.report_types_selected).length-1];
+		var communities_selected_length = Object.keys($scope.communities_selected)[Object.keys($scope.communities_selected).length-1];
+		for(var i=1; i<=report_status_selected_length; i++)
+			$scope.report_status_selected[i]=false;
+		for(var i=1; i<=report_types_selected_length; i++)
+			$scope.report_types_selected[i]=false;
+		for(var i=1; i<=communities_selected_length; i++)
+			$scope.communities_selected[i]=false;
+	}
 });
 
 //Filters
@@ -369,4 +388,22 @@ indexApp.filter("resultFilter", function(){
 	    });
     	return output;
     };
+});
+indexApp.filter("searchBarFilter", function(){
+	return function(collection, content){
+		if(content == "" || content == null)
+			return collection;
+		var output = [];
+		content = content.toLowerCase();
+		angular.forEach(collection, function(item) {
+			if(item.description == undefined){
+				if(~item.name.val.toLowerCase().indexOf(content))
+					output.push(item);
+			}else{
+				if(~item.name.val.toLowerCase().indexOf(content) || ~item.description.toLowerCase().indexOf(content))
+					output.push(item);
+			}
+		});
+		return output;
+	}
 });

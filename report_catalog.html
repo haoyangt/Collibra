@@ -9,15 +9,31 @@
 		<span ng-if="attribute.type=='Description'">{{result.description=attribute.val;""}}</span>
 	</span>
 </span>
-
-
 	<div class="page-header">
 		<h1>GWU Data Insights</h1>
 	</div>
-	<div class="col-lg-12">
-		<h3>Report Catalog</h3>The Report Catalog is a repository  of a vast library of reports and visualizations, providing the ability to search and filter.
+	<div class="subheader">
+		<div class="col-lg-2 title">
+			<h3>Report Catalog</h3>
+		</div>
+		<div class="col-lg-10 nav">
+			<ul>			
+				<li><a href="#">Data Quality Help Desk</a></li>
+				<li><a href="#communities">Communities</a></li>
+				<li><a href="#">Data Sharing Agreements</a></li>
+				<li class="selected">Report Catalog</li>
+				<li><a href="#">Index</a></li>
+			</ul>
+		</div>
+		<div class="col-lg-12 content">
+			The Report Catalog is a repository  of a vast library of reports and visualizations, providing the ability to search and filter.
+		</div>
 	</div>
+	<div class="clear"></div>
 	<div class="col-lg-3 left-section">
+		<div class="clear-filters" ng-click="clearFilters()">
+			CLEAR FILTERS
+		</div>
 		<div class="search">
 			<div class="btn-group search-type" data-toggle="buttons">
 				<label class="btn btn-secondary active">
@@ -88,13 +104,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="result in filterd = (results | filter:{name.val: query} | resultFilter:report_status_selected:report_types_selected:communities_selected |orderBy:orderField:isReverse) track by $index " ng-if="$index>=(currentPage-1)*10 && $index<currentPage*10">
-					<td>{{result.name.val}}</td>
+				<tr ng-repeat="result in filterd = (results | searchBarFilter: query | resultFilter:report_status_selected:report_types_selected:communities_selected |orderBy:orderField:isReverse) track by $index " ng-if="$index>=(currentPage-1)*10 && $index<currentPage*10" ng-style="result.status == 'Certified' && {'font-weight': 'bold'}">
+					<td><a href="https://gwu.collibra.com/term/{{result.name.id}}" target="_blank">{{result.name.val}}</a></td>
 					<td>{{result.description}}</td>
 					<td>{{result.status}}</td>
 					<td>{{result.reportType}}</td>
 					<td>{{result.context.val}}</td>
-					<td><a href="https://gwu.collibra.com/term/{{result.name.id}}" target="_blank">View</a></td>
+					<td><a href="#">View</a></td>
 				</tr>
 			</tbody>
 		</table>
