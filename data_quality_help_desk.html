@@ -1,0 +1,57 @@
+<link rel="stylesheet" type="text/css" href="css/data_quality_help_desk.css">
+
+<div class="container" ng-controller="DataQualityHelpDeskCtrl">
+	<div class="page-header">
+		<h1>GWU Data Insights</h1>
+	</div>
+	<div class="subheader">
+		<div class="col-lg-3 title">
+			<h3>Data Sharing Agreements</h3>
+		</div>
+		<div class="col-lg-9 nav">
+			<ul>			
+				<li><a href="#data_quality_help_desk">Data Quality Help Desk</a></li>
+				<li><a href="#communities">Communities</a></li>
+				<li class="selected">Data Sharing Agreements</li>
+				<li><a href="#report_catalog">Report Catalog</a></li>
+				<li><a href="#index">Index</a></li>
+			</ul>
+		</div>
+		<div class="col-lg-12 content">
+			Data Sharing Agreements formalizes the intended use of data, the specific data being shared, who will have access to the data, and describes the mechanisms for sharing this data.
+		</div>
+	</div>
+	<div class="col-lg-3 left-section">
+		<div class="search-bar">
+			<p>
+				<input type="text" class="search-content" ng-model="query" />
+				<img src="images/icons/magnifying_mirror.png" class="search-icon"/>
+			</p>
+		</div>
+		<div class="status">
+			<p class="status-title">Status</p>
+			<div class="status-list" >
+				<span><input type="checkbox" ng-true-value="All" ng-init="status_selected[0]=true; disable_selection_all=true" ng-model="status_selected[0]" ng-change="changeCheckedBox(0)" ng-checked="status_selected[0]" ng-disabled="disable_selection_all">All</span><br>
+				<span ng-repeat="result in results | deleteDuplicate: 'status' | orderBy:'status' track by $index">
+					<input type="checkbox" ng-true-value="{{result.status}}" ng-model="status_selected[$index+1]" ng-change="changeCheckedBox($index+1)"> {{result.status}}
+				</span>
+			</div>	
+		</div>
+	</div>
+	<div class="col-lg-9 result-section">
+		<table class="table">
+			<thead>
+				<tr>
+					<th ng-click="orderField='name.val'; isReverse=!isReverse"><span>Name</span></th>
+					<th ng-click="orderField='status'; isReverse=!isReverse"><span>Status</span></th>
+				</tr>
+			</thead>
+			<tbody ng-init="orderField='name.val'; isReverse=false">
+				<tr ng-repeat="result in results | filter:{name.val: query} | DSAResultFilter: status_selected | orderBy:orderField:isReverse track by $index" >
+					<td><a href="{{result.name.pageUrl}}" target="_blank">{{result.name.val}}</a></td>
+					<td>{{result.status}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -10,9 +10,9 @@
 		</div>
 		<div class="col-lg-10 nav">
 			<ul>			
-				<li><a href="#">Data Quality Help Desk</a></li>
+				<li><a href="#data_quality_help_desk">Data Quality Help Desk</a></li>
 				<li class="selected">Communities</li>
-				<li><a href="#">Data Sharing Agreements</a></li>
+				<li><a href="#data_sharing_agreements">Data Sharing Agreements</a></li>
 				<li><a href="#report_catalog">Report Catalog</a></li>
 				<li><a href="#index">Index</a></li>
 			</ul>
@@ -65,7 +65,7 @@
 			</thead>
 			<tbody ng-init="orderField='name.val'; isReverse=false">
 				<tr ng-repeat="result in results | filter:{name.val: query} | orderBy:orderField:isReverse track by $index" >
-					<td><a href="https://gwu.collibra.com/community/{{result.name.id}}" target="_blank">{{result.name.val}}</a></td>
+					<td><a href="{{result.name.pageUrl}}" target="_blank">{{result.name.val}}</a></td>
 					<td>{{result.attributes[0].val}}</td>
 				</tr>
 			</tbody>

@@ -10,7 +10,7 @@
 		<div class="well">
 			<p>Search for:</p>
 			<p>
-				<input type="text" class="search-content" ng-model="searchContent" ng-keyup="search()" />
+				<input type="text" class="search-content" ng-model="searchContent" ng-keyup="delaySearch()" />
 				<span><img src="images/icons/arrow_right.png" class="search-icon"/></span>
 				<div class="search-result">
 					<div class="result-detail" ng-repeat="result in results track by $index">
@@ -25,9 +25,9 @@
 	</div>
 	<div class="col-lg-8 col-lg-offset-2 links">
 		<div><a href="#report_catalog">Report Catalog</a></div>
-		<div><a href="#">Data Sharing Agreements</a></div>
+		<div><a href="#data_sharing_agreements">Data Sharing Agreements</a></div>
 		<div><a href="#communities">Communities</a></div>
-		<div><a href="#">Data Quality Help Desk</a></div>
+		<div><a href="#data_quality_help_desk">Data Quality Help Desk</a></div>
 	</div>
 	<!-- <div class="col-lg-12 login" ng-style="loginHoverStyle">
 		<p>

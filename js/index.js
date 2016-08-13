@@ -1,5 +1,3 @@
-
-
 var indexApp = angular.module('IndexApp', ['ngRoute']);
 indexApp.config(function($routeProvider) {
     $routeProvider.
@@ -12,10 +10,20 @@ indexApp.config(function($routeProvider) {
         controller: 'CommunitiesCtrl'
       }).
       when('/login', {
-        templateUrl: 'login.html'
+        templateUrl: 'login.html',
+        controller: 'LoginCtrl'
       }).
       when('/report_catalog', {
-        templateUrl: 'report_catalog.html'
+        templateUrl: 'report_catalog.html',
+        controller: 'ReportCatalogCtrl'
+      }).
+      when('/data_sharing_agreements', {
+        templateUrl: 'data_sharing_agreements.html',
+        controller: 'DataSharingAgreementsCtrl'
+      }).
+      when('/data_quality_help_desk', {
+        templateUrl: 'data_quality_help_desk.html',
+        controller: 'DataQualityHelpDeskCtrl'
       }).
       otherwise({
         redirectTo: '/'
@@ -63,6 +71,18 @@ indexApp.controller('HomeCtrl', function($scope, $http, $location, $rootScope){
 		});
 	});
 	// -------jQuery END----------
+
+	$scope.delaySearch = function(){
+		$scope.delay($scope.search, 500);
+	}
+
+	$scope.delay = (function(){
+		var timer = 0;
+		return function(callback, ms){
+			clearTimeout (timer);
+			timer = setTimeout(callback, ms);
+		};
+	})();
 
 	$scope.search = function(){
 		$(".search-result").animate({scrollTop: 0}, "fast");
@@ -319,7 +339,102 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 	}
 });
 
-//Filters
+indexApp.controller('DataSharingAgreementsCtrl', function($scope, $http){
+	$scope.status_selected = {};
+
+	//Get Data Sharing Agreements
+	var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":["0f30917a-2199-4240-a409-8395aabc7237"],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":1000,"query":"*"};
+	$http({
+		method: 'POST',
+		url: 'https://gwu.collibra.com/rest/latest/search',
+		contentType: "application/json",
+		data: JSON.stringify(data)
+	}).then(
+		function successCallback(response) {
+			$scope.results = response.data.results;
+			console.log($scope.results);
+		}, function errorCallback(response) {
+			$location.path("/Collibra/");
+			$rootScope.msg="Time out! Please log in and try again!";
+		}
+	);
+
+	$scope.changeCheckedBox = function(id){
+		if($scope.status_selected[id]){
+			if(id == 0){
+				angular.forEach($scope.status_selected,function(value, key){
+                	$scope.status_selected[key] = false;
+	            });
+	            $scope.status_selected[0] = true;
+				$scope.disable_selection_all = true;
+			}else{
+				$scope.status_selected[0] = false;
+				$scope.disable_selection_all = false;
+			}
+		}else{
+			var updateAllSelection = true;
+			angular.forEach($scope.status_selected,function(value, key){
+            	if($scope.status_selected[key] != false){
+					updateAllSelection = false;
+				}
+            });
+			if(updateAllSelection){
+				$scope.status_selected[0] = true;
+				$scope.disable_selection_all = true;
+			}
+		}
+	}
+});
+
+indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http){
+	$scope.status_selected = {};
+
+	//Get Data Issues
+	var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":["00000000-0000-0000-0000-000000031001"],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":1000,"query":"*"};
+	$http({
+		method: 'POST',
+		url: 'https://gwu.collibra.com/rest/latest/search',
+		contentType: "application/json",
+		data: JSON.stringify(data)
+	}).then(
+		function successCallback(response) {
+			$scope.results = response.data.results;
+			console.log($scope.results);
+		}, function errorCallback(response) {
+			$location.path("/Collibra/");
+			$rootScope.msg="Time out! Please log in and try again!";
+		}
+	);
+
+	$scope.changeCheckedBox = function(id){
+		if($scope.status_selected[id]){
+			if(id == 0){
+				angular.forEach($scope.status_selected,function(value, key){
+                	$scope.status_selected[key] = false;
+	            });
+	            $scope.status_selected[0] = true;
+				$scope.disable_selection_all = true;
+			}else{
+				$scope.status_selected[0] = false;
+				$scope.disable_selection_all = false;
+			}
+		}else{
+			var updateAllSelection = true;
+			angular.forEach($scope.status_selected,function(value, key){
+            	if($scope.status_selected[key] != false){
+					updateAllSelection = false;
+				}
+            });
+			if(updateAllSelection){
+				$scope.status_selected[0] = true;
+				$scope.disable_selection_all = true;
+			}
+		}
+	}
+});
+
+
+//===========================Filters===========================
 indexApp.filter("deleteDuplicate", function(){
 	return function(collection, keyname) {
     	var output = [], 
@@ -352,7 +467,7 @@ indexApp.filter("deleteDuplicateForCommunities", function(){
     return output;
     };
 });
-indexApp.filter("resultFilter", function(){
+indexApp.filter("RCResultFilter", function(){
 	return function(collection, report_status_selected, report_types_selected, communities_selected) {
     	var output = [];
     	if(report_status_selected[0] && report_types_selected[0] && communities_selected[0])
@@ -403,6 +518,20 @@ indexApp.filter("searchBarFilter", function(){
 				if(~item.name.val.toLowerCase().indexOf(content) || ~item.description.toLowerCase().indexOf(content))
 					output.push(item);
 			}
+		});
+		return output;
+	}
+});
+indexApp.filter("DSAResultFilter", function(){
+	return function(collection, status_selected) {
+		if(status_selected[0])
+			return collection;
+		var output = [];
+		angular.forEach(collection, function(item) {
+			angular.forEach(status_selected, function(item2) {
+				if(item.status == item2)
+					output.push(item);
+			});
 		});
 		return output;
 	}
