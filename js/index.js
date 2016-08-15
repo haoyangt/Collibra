@@ -3,27 +3,33 @@ indexApp.config(function($routeProvider) {
     $routeProvider.
       when('/', {
         templateUrl: 'home.html',
-        controller: 'HomeCtrl'
+        controller: 'HomeCtrl',
+        css: 'css/home.css'
       }).
       when('/communities', {
         templateUrl: 'communities.html',
-        controller: 'CommunitiesCtrl'
+        controller: 'CommunitiesCtrl',
+        css: 'css/communities.css'
       }).
       when('/login', {
         templateUrl: 'login.html',
-        controller: 'LoginCtrl'
+        controller: 'LoginCtrl',
+        css: 'css/login.css'
       }).
       when('/report_catalog', {
         templateUrl: 'report_catalog.html',
-        controller: 'ReportCatalogCtrl'
+        controller: 'ReportCatalogCtrl',
+        css: 'css/report_catalog.css'
       }).
       when('/data_sharing_agreements', {
         templateUrl: 'data_sharing_agreements.html',
-        controller: 'DataSharingAgreementsCtrl'
+        controller: 'DataSharingAgreementsCtrl',
+        css: 'css/data_sharing_agreements.css'
       }).
       when('/data_quality_help_desk', {
         templateUrl: 'data_quality_help_desk.html',
-        controller: 'DataQualityHelpDeskCtrl'
+        controller: 'DataQualityHelpDeskCtrl',
+        css: 'css/data_quality_help_desk.css'
       }).
       otherwise({
         redirectTo: '/'
@@ -52,10 +58,17 @@ indexApp.run( function($rootScope, $location, $http) {
 			}
 		);       
     });
- })
+ });
 
+indexApp.controller('IndexCtrl', function($scope, $route){
+	$scope.$watch( function(){
+		return $route.current.css;
+	}, function(value){
+		$scope.css = value;
+	});
+});
 
-indexApp.controller('HomeCtrl', function($scope, $http, $location, $rootScope){
+indexApp.controller('HomeCtrl', function($scope, $http, $location, $rootScope, $route){
 	// -------jQuery START----------
 	$(function(){
 		$(".search-content")
@@ -73,7 +86,7 @@ indexApp.controller('HomeCtrl', function($scope, $http, $location, $rootScope){
 	// -------jQuery END----------
 
 	$scope.delaySearch = function(){
-		$scope.delay($scope.search, 500);
+		$scope.delay($scope.search, 400);
 	}
 
 	$scope.delay = (function(){
@@ -226,7 +239,34 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 	}).then(
 		function successCallback(response) {
 			$scope.results = response.data.results;
-			$scope.loading_icon_display = false;
+			angular.forEach($scope.results, function(result){
+				angular.forEach(result.attributes, function(attribute){
+					if(attribute.type == 'Link'){
+						$http({
+							method: 'GET',
+							url: attribute.restUrl,
+							contentType: "application/json"
+						}).then(
+							function successCallback(response) {
+								angular.forEach(response.data.attributeReferences.attributeReference, function(attributeReference){
+									if(attributeReference.value != undefined){
+										var indexStart = attributeReference.value.indexOf('href="https://gsource.gwu.edu/');
+										if(indexStart >= 0){
+											var tempUrl = attributeReference.value.substring(indexStart+6);
+											var finalUrl = tempUrl.substring(0, tempUrl.indexOf('"'));
+											result.gsourceLink = finalUrl;
+										}
+									}
+								});
+								$scope.loading_icon_display = false;
+							}, function errorCallback(response) {
+								$location.path("/Collibra/");
+								$rootScope.msg="Time out! Please log in and try again!";
+							}
+						);
+					}
+				});
+			});
 		}, function errorCallback(response) {
 			$location.path("/Collibra/");
 			$rootScope.msg="Time out! Please log in and try again!";
@@ -352,7 +392,6 @@ indexApp.controller('DataSharingAgreementsCtrl', function($scope, $http){
 	}).then(
 		function successCallback(response) {
 			$scope.results = response.data.results;
-			console.log($scope.results);
 		}, function errorCallback(response) {
 			$location.path("/Collibra/");
 			$rootScope.msg="Time out! Please log in and try again!";
@@ -399,7 +438,6 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http){
 	}).then(
 		function successCallback(response) {
 			$scope.results = response.data.results;
-			console.log($scope.results);
 		}, function errorCallback(response) {
 			$location.path("/Collibra/");
 			$rootScope.msg="Time out! Please log in and try again!";

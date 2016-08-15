@@ -36,21 +36,24 @@ h3{
   list-style-type: none;
   line-height: 3.5em;
   font-size: 11px;
-  background-color: #449d44;
+  background-color: #006400;
   border-color: #398439;
   color: white;
   font-weight: bold;
   border-radius: 10px;
+  box-shadow: 3px 3px 5px black;
+  transition: linear 0.3s;
 }
 .subheader>.nav>ul>li.selected{
-  background-color: #5cb85c;
+  background-color: #4CAF50;
   border-color: #4cae4c;
   cursor: default;
 }
 .subheader>.nav>ul>li:hover:not(.selected){
-  background-color: #5cb85c;
+  background-color: #fff;
   border-color: #4cae4c;
   cursor: pointer;
+  transform: scale(1.05);
 }
 .subheader>.nav>ul>li>a{
   display: block;
@@ -58,6 +61,9 @@ h3{
   width: 100%;
   color: white;
   text-decoration: none;
+}
+.subheader>.nav>ul>li:hover:not(.selected)>a{
+  color: green;
 }
 .left-section>.search-bar{
   height: 50px;

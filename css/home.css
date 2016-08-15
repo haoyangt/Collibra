@@ -49,44 +49,43 @@ h1{
   margin-top: 5px;
   margin-bottom: 5px;
   padding: 0;
+  text-align: center;
 }
-.links>div {
-  width: 47%;
-  height: 70px;
-  margin: 1%;
+.links>a{
+  display: block;
+  width: 42%;
+  height: 160px;
+  margin: 1% 4%;
   padding: 5px;
   color: #fff;
-  background-color: #449d44;
-  border-color: #255625;
   border-radius: 5px;
   text-align: center;
-  display:table;
   float: left;
+  box-shadow: 4px 4px 12px black;
+  transition: linear 0.2s;
 }
-.links>div:focus {
-  color: #fff;
-  background-color: #449d44;
+.links>a:hover {
+  background-color: #DDD;
+  border: 2px solid #000;
+  text-decoration: none;
+  transform: scale(1.1);
+}
+.links>a:active{
+  background-color: #DDD;
   border-color: #398439;
   text-decoration: none;
 }
-.links>div:hover {
-  color: #fff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
-  text-decoration: none;
-}
-.links>div:active{
-  color: #fff;
-  background-color: #449d44;
-  border-color: #398439;
-  text-decoration: none;
-}
-.links>div>a{
-  display:table-cell;
-  vertical-align:middle;
+.links>a>span{
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
   text-decoration: none;
   cursor: pointer;
-  color: #fff;
+  color: #000;
+}
+.links>a>img{
+  border-radius: 15px;
 }
 .login{
   height:96px;

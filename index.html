@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="IndexApp">
+<html ng-app="IndexApp" ng-controller="IndexCtrl">
 <head>
 	<title>Index</title>
 	<!-- supporting library -->
@@ -9,10 +9,10 @@
 	<script src="js/bootstrap.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
-
+	
 	<!-- custom files -->
 	<script src="js/index.js"></script>
-	
+	<link rel="stylesheet" ng-href="{{css}}">
 </head>
 	<body>
 		<div ng-view></div>
