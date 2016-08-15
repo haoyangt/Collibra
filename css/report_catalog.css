@@ -41,10 +41,11 @@ h3{
   float: right;
   margin-left: 5px;
   padding: 0 10px;
-  width: 200px;
+  width: 160px;
   text-align: center;
   list-style-type: none;
   line-height: 3.5em;
+  font-size: 11px;
   background-color: #449d44;
   border-color: #398439;
   color: white;
