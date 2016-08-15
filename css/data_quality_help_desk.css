@@ -10,6 +10,80 @@ h3{
 .container{
 	width:95%;
 }
+.cover{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: rgba(0,0,0,0.88); 
+  z-index: 1;
+}
+.cover>.cover-container{
+  width: 35%;
+  margin: 40px auto;
+  padding: 0 0 20px 0;
+  background: #F5F1DE;
+  border: 2px solid #FFF;
+  border-radius: 10px;
+}
+.cover>.cover-container>form>.title{
+  width: 100%;
+  border-bottom: 1px solid #AAA;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #DD0000;
+}
+.cover>.cover-container>form>.title>span{
+  display: inline-block;
+  margin: -8px 8px;
+  color: #555;
+  font-size: 25px;
+  float: right;
+}
+.cover>.cover-container>form>.title>span:hover{
+  cursor: pointer;
+}
+.cover>.cover-container>form>.content{
+  width: 90%;
+  margin: 0 auto;
+  font-family: Arial;
+  font-size: 12px;
+  color: #000;
+}
+.cover>.cover-container>form>.content>div{
+  margin: 18px 0;
+}
+.cover>.cover-container>form>.content>div>p{
+  margin: 0;
+}
+.cover>.cover-container>form>.content>div>input, .cover>.cover-container>form>.content>div>select{
+  width: 100%;
+  height: 30px;
+  padding: 0 5px;
+  border: 2px solid #AAA;
+}
+.cover>.cover-container>form>.content>div>input:focus, .cover>.cover-container>form>.content>div>select:focus{
+  border: 2px solid #CC0000;
+  outline: none;
+}
+.cover>.cover-container>form>.content>button{
+  width: 140px;
+  height: 30px;
+  background: linear-gradient(to bottom, #fcfff4 0%,#dfe5d7 40%,#b3bead 100%);
+  box-shadow: 3px 3px 12px black;
+}
+.cover>.cover-container>form>.content>button:hover{
+  background: linear-gradient(to bottom, #cedce7 0%,#596a72 100%);
+}
+.cover>.cover-container>form>.content>button:active{
+  background: #AAA;
+}
+.cover>.cover-container>form>.content>button:focus{
+  outline: none;
+}
 .subheader{
   margin: 0;
   height: 70px;
@@ -112,6 +186,30 @@ h3{
 .left-section>.status>.status-list>span{
   min-width: 50%;
   display: inline-block;
+}
+.left-section>.log-issues{
+  width: 100%;
+  text-align: center;
+}
+.left-section>.log-issues>button{
+  margin: 20px auto;
+  width: 70%;
+  height: 60px;
+  text-align: center;
+  border: 2px green solid;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  background: #FFF;
+  transition: linear 0.25s;
+}
+.left-section>.log-issues>button:hover{
+  color: #FFF;
+  background: #006400;
+  cursor: pointer;
+}
+.left-section>.log-issues>button:focus{
+  outline: none;
 }
 .result-section{
   padding: 0 5px;

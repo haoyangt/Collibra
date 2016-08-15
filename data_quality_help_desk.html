@@ -1,4 +1,42 @@
 <div class="container" ng-controller="DataQualityHelpDeskCtrl">
+	<div class="cover" ng-init="displayCover=false" ng-show="displayCover">
+		<div class="cover-container">
+			<form>
+				<div class="title">Log Issue<span ng-click="displayCover=false">×</span></div>
+				<div class="content">
+					<div>
+						<p>Title</p>
+						<input type="input" name="title">
+					</div>
+					<div>
+						<p>Description</p>
+						<input type="input" name="description">
+					</div>
+					<div>
+						<p>Priority</p>
+						<select>
+							<option>High</option>
+							<option>Normal</option>
+							<option>Low</option>
+						</select>
+					</div>
+					<div>
+						<p>Responsible Community</p>
+						<input type="input" name="responsible_community">
+					</div>
+					<div>
+						<p>Relevant Assets</p>
+						<input type="input" name="relevant_assets" placeholder="Type something here and confirm">
+					</div>
+					<div>
+						<p>Issue clarification</p>
+						<input type="input" name="relevant_assets" placeholder="Enter possible values and separate">
+					</div>
+					<button>Create Issue</button>
+				</div>
+			</form>
+		</div>
+	</div>
 	<div class="page-header">
 		<h1>GWU Data Insights</h1>
 	</div>
@@ -34,6 +72,9 @@
 					<input type="checkbox" ng-true-value="{{result.status}}" ng-model="status_selected[$index+1]" ng-change="changeCheckedBox($index+1)"> {{result.status}}
 				</span>
 			</div>	
+		</div>
+		<div class="log-issues">
+			<button ng-click="displayCover=true">Log a Data Quality Issue</button>
 		</div>
 	</div>
 	<div class="col-lg-9 result-section">
