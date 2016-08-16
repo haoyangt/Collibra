@@ -239,9 +239,12 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 	}).then(
 		function successCallback(response) {
 			$scope.results = response.data.results;
+			var totalCount = 0;
+			var count = 0;
 			angular.forEach($scope.results, function(result){
 				angular.forEach(result.attributes, function(attribute){
 					if(attribute.type == 'Link'){
+						totalCount++;
 						$http({
 							method: 'GET',
 							url: attribute.restUrl,
@@ -258,7 +261,10 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 										}
 									}
 								});
-								$scope.loading_icon_display = false;
+								count++;
+								if(count == totalCount){
+									$scope.loading_icon_display = false;
+								}
 							}, function errorCallback(response) {
 								$location.path("/Collibra/");
 								$rootScope.msg="Time out! Please log in and try again!";

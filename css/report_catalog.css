@@ -202,11 +202,21 @@ h3{
   top: -50px;
   left: 50%;
   margin-left: -200px;
-  z-index: 1;
+  z-index: 2;
 }
 .result-section>.loading>img{
   width: 400px;
   height: 400px;
+}
+.result-section>.cover{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 99%;
+  height: 100%;
+  margin: 0 5px;
+  background: rgba(255,255,255,0.7);
+  z-index: 1;
 }
 .result-section>table{
   border: 2px solid #DDDDDD;
