@@ -385,7 +385,7 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 	}
 });
 
-indexApp.controller('DataSharingAgreementsCtrl', function($scope, $http){
+indexApp.controller('DataSharingAgreementsCtrl', function($scope, $http, $location){
 	$scope.status_selected = {};
 
 	//Get Data Sharing Agreements
@@ -431,8 +431,32 @@ indexApp.controller('DataSharingAgreementsCtrl', function($scope, $http){
 	}
 });
 
-indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http){
+indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location){
+	// -------jQuery START----------
+	$(function(){
+		$('.relevant-assets').on('focus', function() {
+			$(".search-result").fadeIn();
+		});
+		$('.relevant-assets').on('blur', function() {
+			if(!$(".search-result").is(":hover")) {
+				$(".search-result").fadeOut();
+			}else{
+				$(this).focus();
+			}
+		});
+	});
+	// -------jQuery END----------
+
+	// Textarea Plugin Initialization
+	tinymce.init({
+		selector: 'textarea',
+		resize: false,
+		height: 130,
+		width: window.innerWidth*0.53
+	});
+
 	$scope.status_selected = {};
+	$scope.issue={relatedTerm:[]}
 
 	//Get Data Issues
 	var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":["00000000-0000-0000-0000-000000031001"],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":1000,"query":"*"};
@@ -444,6 +468,22 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http){
 	}).then(
 		function successCallback(response) {
 			$scope.results = response.data.results;
+			console.log($scope.results);
+		}, function errorCallback(response) {
+			$location.path("/Collibra/");
+			$rootScope.msg="Time out! Please log in and try again!";
+		}
+	);
+
+	
+	$http({
+		method: 'GET',
+		url: 'https://gwu.collibra.com/rest/latest/community/all',
+		contentType: "application/json"
+	}).then(
+		function successCallback(response) {
+			console.log(response);
+			$scope.communities =  response.data.communityReference;
 		}, function errorCallback(response) {
 			$location.path("/Collibra/");
 			$rootScope.msg="Time out! Please log in and try again!";
@@ -474,6 +514,87 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http){
 				$scope.disable_selection_all = true;
 			}
 		}
+	}
+
+	$scope.createIssue = function(){
+		$http({
+			method: 'POST',
+			url: 'https://gwu.collibra.com/rest/1.0/issue',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			transformRequest: function(obj) {
+		        var str = [];
+		        for(var p in obj)
+		        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+		        return str.join("&");
+		    },
+			data: {requester:'a79f4257-016f-4704-a0b3-952c547d7a50', signifier: 'test', type: 'test'}
+		}).then(
+			function successCallback(response) {
+				console.log(response);
+			}, function errorCallback(response) {
+				console.log("FAIL+++++++++++++++");
+			}
+		);
+	}
+
+	$scope.addRelevantAssets = function(newData){
+		$scope.newRelatedTerm = "";
+		$scope.issue.relatedTerm.push(newData);
+		$scope.inputFocused = true;
+		console.log($scope.issue.relatedTerm);
+	}
+
+	$scope.deleteRelevantAssets = function(index){
+		$scope.issue.relatedTerm.splice(index, 1); 
+	}
+
+	$scope.delaySearch = function(){
+		$scope.delay($scope.search, 400);
+	}
+
+	$scope.delay = (function(){
+		var timer = 0;
+		return function(callback, ms){
+			clearTimeout (timer);
+			timer = setTimeout(callback, ms);
+		};
+	})();
+
+	$scope.search = function(){
+		$(".search-result").animate({scrollTop: 0}, "fast");
+		if($scope.newRelatedTerm == '')
+			return;
+		var index = $scope.newRelatedTerm.lastIndexOf(";");
+		var searchContent = $scope.newRelatedTerm.substring(index+1);
+		var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":[],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","comment","attributes"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":20,"query":searchContent};			
+		$http({
+				method: 'POST',
+				url: 'https://gwu.collibra.com/rest/latest/search',
+				contentType: "application/json",
+				data: JSON.stringify(data)
+		}).then(
+			function successCallback(response) {
+			    $scope.relavantAssets = response.data.results;
+			    angular.forEach($scope.relavantAssets, function(result){
+			    	if(result.context.restUrl != ''){
+			    		$http({
+							method: 'GET',
+							url: result.context.restUrl
+						}).then(
+							function successCallback(response) {
+			    				if(response.data.communityReference)
+							    	result.higherReference = response.data.communityReference.name;
+							}, function errorCallback(response) {
+
+							}
+						);
+			    	}
+			    });
+			}, function errorCallback(response) {
+				$location.path("/Collibra/");
+				$rootScope.msg="Time out! Please log in and try again!";
+			}
+		);
 	}
 });
 

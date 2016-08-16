@@ -15,13 +15,13 @@ h3{
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
+  height: 120%;
   margin: 0;
   background: rgba(0,0,0,0.88); 
   z-index: 1;
 }
 .cover>.cover-container{
-  width: 35%;
+  width: 60%;
   margin: 40px auto;
   padding: 0 0 20px 0;
   background: #F5F1DE;
@@ -69,19 +69,96 @@ h3{
   border: 2px solid #CC0000;
   outline: none;
 }
-.cover>.cover-container>form>.content>button{
+.cover>.cover-container>form>.content>div:nth-of-type(5){
+  position: relative;
+}
+.cover>.cover-container>form>.content>div>ul{
+  width: 100%;
+  height: 30px;
+  padding: 0 5px;
+  background: white;
+  border: 2px solid #AAA;
+}
+.cover>.cover-container>form>.content>div>ul>li:not(.input){
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 2px 4px;
+  height: 26px;
+  margin: 0 2px;
+  background: #DDD;
+  list-style-type: none;
+  float:left;
+}
+.cover>.cover-container>form>.content>div>ul>li.input{
+  float:left;
+  margin-left: 5px;
+  width: 27%;
+  list-style-type: none;
+}
+.cover>.cover-container>form>.content>div>ul>li>a{
+  cursor: pointer;
+  color: #999;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 2px 0 3px;
+}
+.cover>.cover-container>form>.content>div>ul>li>input{
+  border: 0;
+  width: 100%;
+  height: 26px;
+}
+.cover>.cover-container>form>.content>div>ul>li>input:focus{
+  outline: none;
+}
+.cover>.cover-container>form>.content>div>.search-result{
+  display: none;
+  position: absolute;
+  left: 100px;
+  top: -288px;
+  background: #fff;
+  border: solid 2px lavender;
+  width:70%;
+  height:300px;
+  z-index: 1;
+  overflow-y: auto;
+}
+.cover>.cover-container>form>.content>div>.search-result>.result-detail{
+  width: 96%;
+  margin: 0 auto;
+  font-family: 'Titillium Web', sans-serif;
+  padding: 5px 10px;
+  border-bottom: 2px solid lavender;
+}
+.cover>.cover-container>form>.content>div>.search-result>.result-detail>h4{
+  font-weight: bold;
+}
+.cover>.cover-container>form>.content>div>.search-result>.result-detail>h4>a{
+  cursor: pointer;
+  color: black;
+}
+.cover>.cover-container>form>.content>div>.search-result>.result-detail>p:nth-of-type(1){
+  font-style: italic;
+  color: #BFBFBF;
+}
+.cover>.cover-container>form>.content>div>.search-result>.result-detail>a{
+  text-decoration: none;
+  color: #5D71D9;
+  cursor: pointer;
+}
+.cover>.cover-container>form>.content>input{
   width: 140px;
   height: 30px;
   background: linear-gradient(to bottom, #fcfff4 0%,#dfe5d7 40%,#b3bead 100%);
   box-shadow: 3px 3px 12px black;
 }
-.cover>.cover-container>form>.content>button:hover{
+.cover>.cover-container>form>.content>input:hover{
   background: linear-gradient(to bottom, #cedce7 0%,#596a72 100%);
 }
-.cover>.cover-container>form>.content>button:active{
+.cover>.cover-container>form>.content>input:active{
   background: #AAA;
 }
-.cover>.cover-container>form>.content>button:focus{
+.cover>.cover-container>form>.content>input:focus{
   outline: none;
 }
 .subheader{
