@@ -6,14 +6,18 @@
 	<script>
 	$(function(){
 		$("input:eq(0)").click(function(){
+			var data = {"requester": "a79f4257-016f-4704-a0b3-952c547d7a50", "signifier": "stringmessage", "type":"00000000-0000-0000-0000-000000031111"};
 			$.ajax({
-				type: "GET",
-				url: "https://gwu.collibra.com/rest/latest/term/caa284c4-7fc0-46cd-977a-f6bfcf410ac1",
+				type: "POST",
+				url: "https://gwu.collibra.com/rest/1.0/issue",
+				data: JSON.stringify(data),
+				dataType: "json",
+				contentType: "application/json",
 				success: function(t){
 					console.log(t);
 				},
 				error: function(t){
-					console.log("========================ERROR========================");
+					console.log(t);
 				}
 			});
 			// var xhr = new XMLHttpRequest();

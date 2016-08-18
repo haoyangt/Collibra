@@ -452,11 +452,14 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		selector: 'textarea',
 		resize: false,
 		height: 130,
-		width: window.innerWidth*0.53
+		width: window.innerWidth*0.53,
+		mode : "specific_textareas",
+        editor_selector : "mceEditor"
 	});
 
 	$scope.status_selected = {};
-	$scope.issue={relatedTerm:[]}
+	$scope.issue = {"relatedTerm":[], };
+	$scope.relatedTerm = [];
 
 	//Get Data Issues
 	var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":["00000000-0000-0000-0000-000000031001"],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","00000000-0000-0000-0000-000000003114","00000000-0000-0000-0000-000000000202","comment"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":1000,"query":"*"};
@@ -468,7 +471,6 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 	}).then(
 		function successCallback(response) {
 			$scope.results = response.data.results;
-			console.log($scope.results);
 		}, function errorCallback(response) {
 			$location.path("/Collibra/");
 			$rootScope.msg="Time out! Please log in and try again!";
@@ -482,7 +484,6 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		contentType: "application/json"
 	}).then(
 		function successCallback(response) {
-			console.log(response);
 			$scope.communities =  response.data.communityReference;
 		}, function errorCallback(response) {
 			$location.path("/Collibra/");
@@ -517,6 +518,22 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 	}
 
 	$scope.createIssue = function(){
+		if($scope.relatedTerm.length == 0){
+			delete $scope.issue.relatedTerm;
+			// delete $scope.issue.relationType;
+			// delete $scope.issue.direction;
+		}else{
+			angular.forEach($scope.relatedTerm, function(term){
+				$scope.issue.relatedTerm.push(term.id);
+				// $scope.issue.relationType.push(term.type);
+				// $scope.issue.relationType.push(true);
+			});
+		}
+		$scope.issue.requester = "a79f4257-016f-4704-a0b3-952c547d7a50";
+		$scope.issue.type = "00000000-0000-0000-0000-000000031111";
+		$scope.issue.description = tinyMCE.activeEditor.getContent();
+		$scope.relatedTerm.length = 0;
+		console.log($scope.issue);
 		$http({
 			method: 'POST',
 			url: 'https://gwu.collibra.com/rest/1.0/issue',
@@ -527,25 +544,30 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 		        return str.join("&");
 		    },
-			data: {requester:'a79f4257-016f-4704-a0b3-952c547d7a50', signifier: 'test', type: 'test'}
+			data: $scope.issue
 		}).then(
 			function successCallback(response) {
 				console.log(response);
 			}, function errorCallback(response) {
-				console.log("FAIL+++++++++++++++");
+				$location.path("/Collibra/");
+				$rootScope.msg="Time out! Please log in and try again!";
+			}
+		).then(
+			function(){
+				$scope.issue = {"relatedTerm":[], "priority": "Normal"};
+				tinyMCE.activeEditor.setContent("");
 			}
 		);
 	}
 
-	$scope.addRelevantAssets = function(newData){
+	$scope.addRelevantAssets = function(id, val, type){
 		$scope.newRelatedTerm = "";
-		$scope.issue.relatedTerm.push(newData);
+		$scope.relatedTerm.push({"id": id, "val": val, "type": type});
 		$scope.inputFocused = true;
-		console.log($scope.issue.relatedTerm);
 	}
 
 	$scope.deleteRelevantAssets = function(index){
-		$scope.issue.relatedTerm.splice(index, 1); 
+		$scope.relatedTerm.splice(index, 1); 
 	}
 
 	$scope.delaySearch = function(){
@@ -564,9 +586,7 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		$(".search-result").animate({scrollTop: 0}, "fast");
 		if($scope.newRelatedTerm == '')
 			return;
-		var index = $scope.newRelatedTerm.lastIndexOf(";");
-		var searchContent = $scope.newRelatedTerm.substring(index+1);
-		var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":[],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","comment","attributes"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":20,"query":searchContent};			
+		var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":[],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","comment","attributes"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":20,"query":$scope.newRelatedTerm};			
 		$http({
 				method: 'POST',
 				url: 'https://gwu.collibra.com/rest/latest/search',
@@ -575,6 +595,7 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		}).then(
 			function successCallback(response) {
 			    $scope.relavantAssets = response.data.results;
+			    console.log($scope.relavantAssets);
 			    angular.forEach($scope.relavantAssets, function(result){
 			    	if(result.context.restUrl != ''){
 			    		$http({

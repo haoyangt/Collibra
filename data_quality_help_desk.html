@@ -6,36 +6,37 @@
 				<div class="content">
 					<div>
 						<p>Title</p>
-						<input type="input" ng-model="issue.signifier">
+						<input type="input" ng-model="issue.signifier" required>
 					</div>
 					<div>
 						<p>Description</p>
-						<textarea id="fff" ng-model="issue.description"></textarea>
+						<textarea id="description"></textarea>
 					</div>
 					<div>
 						<p>Priority</p>
-						<select ng-model="issue.priority">
-							<option></option>
-							<option>High</option>
-							<option>Normal</option>
-							<option>Low</option>
+						<select ng-init="issue.priority='Normal'" ng-model="issue.priority">
+							<option value="Blocking">Blocking</option>
+							<option value="Critical">Critical</option>
+							<option value="Urgent">Urgent</option>
+							<option value="Normal">Normal</option>
+							<option value="Minor">Minor</option>
 						</select>
 					</div>
 					<div>
 						<p>Responsible Community</p>
-						<select ng-model="issue.priority">
-							<option ng-repeat="community in communities track by $index">{{community.name}}</option>
+						<select ng-model="issue.responsibleCommunity">
+							<option ng-repeat="community in communities track by $index" value={{community.resourceId}}>{{community.name}}</option>
 						</select>
 					</div>
 					<div>
 						<p>Relevant Assets</p>
 						<ul ng-init="inputFocused=false" ng-style="inputFocused && {'border': '2px solid #CC0000'}">
-							<li ng-repeat="term in issue.relatedTerm track by $index">{{term}}<a ng-click="deleteRelevantAssets($index)">×</a></li>
+							<li ng-repeat="term in relatedTerm track by $index">{{term.val}}<a ng-click="deleteRelevantAssets($index)">×</a></li>
 							<li class="input"><input class="relevant-assets" type="input" ng-model="newRelatedTerm" ng-keyup="delaySearch()" placeholder="Type something here and confirm" ng-focus="inputFocused=true" ng-blur="inputFocused=false"></li>
 						</ul>
 						<div class="search-result">
-							<div class="result-detail" ng-repeat="result in relavantAssets track by $index">
-								<h4><a ng-click="addRelevantAssets(result.name.val)">{{result.name.val}}</a></h4>
+							<div class="result-detail" ng-repeat="result in relavantAssets track by $index" ng-if="result.context.val != ''">
+								<h4><a ng-click="addRelevantAssets(result.name.id, result.name.val, result.context.id)">{{result.name.val}}</a></h4>
 								<p>{{result.higherReference}} <span ng-show="result.higherReference">></span> {{result.context.val}}</p>
 								<p ng-repeat="attribute in result.attributes track by $index" ng-if="attribute.type=='Description' || attribute.type=='Definition'">{{attribute.val}}</p>
 								<a href="https://gwu.collibra.com/term/{{result.name.id}}" target="_blank">Get more details ...</a>
