@@ -31,6 +31,10 @@ indexApp.config(function($routeProvider) {
         controller: 'DataQualityHelpDeskCtrl',
         css: 'css/data_quality_help_desk.css'
       }).
+      when('/FAQ', {
+        templateUrl: 'FAQ.html',
+        css: 'css/FAQ.css'
+      }).
       otherwise({
         redirectTo: '/'
       });
@@ -60,12 +64,14 @@ indexApp.run( function($rootScope, $location, $http) {
     });
  });
 
-indexApp.controller('IndexCtrl', function($scope, $route){
-	$scope.$watch( function(){
-		return $route.current.css;
-	}, function(value){
-		$scope.css = value;
-	});
+indexApp.controller('IndexCtrl', function($scope, $route, $routeParams){
+	$scope.$on('$routeChangeStart', function() {
+    	$scope.$watch( function(){
+			return $route.current.css;
+		}, function(value){
+			$scope.css = value;
+		});
+  	});
 });
 
 indexApp.controller('HomeCtrl', function($scope, $http, $location, $rootScope, $route){
@@ -444,6 +450,16 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 				$(this).focus();
 			}
 		});
+		$(".classification_input").on('focus', function() {
+			$(".classification").fadeIn();
+		});
+		$('.classification_input').on('blur', function() {
+			if(!$(".classification").is(":hover")) {
+				$(".classification").fadeOut();
+			}else{
+				$(this).focus();
+			}
+		});
 	});
 	// -------jQuery END----------
 
@@ -456,9 +472,9 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		mode : "specific_textareas",
         editor_selector : "mceEditor"
 	});
-
+	$scope.original_classifications = ["Accuracy Issue","Completeness Issue","Conformity Issue","Consistency Issue","Data Definition Issue","Data Policy Issue","Data Quality Issue","Definition Is Missing","Definition not Clear","Definition not Correct","Integrity Issue","Policy Is Missing","Policy non Compliance Issue"];
 	$scope.status_selected = {};
-	$scope.issue = {"relatedTerm":[], };
+	$scope.issue = {"relatedTerm":[], "relationType":[], "direction":[], "classification":[]};
 	$scope.relatedTerm = [];
 
 	//Get Data Issues
@@ -518,31 +534,38 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 	}
 
 	$scope.createIssue = function(){
-		if($scope.relatedTerm.length == 0){
-			delete $scope.issue.relatedTerm;
-			// delete $scope.issue.relationType;
-			// delete $scope.issue.direction;
-		}else{
-			angular.forEach($scope.relatedTerm, function(term){
-				$scope.issue.relatedTerm.push(term.id);
-				// $scope.issue.relationType.push(term.type);
-				// $scope.issue.relationType.push(true);
-			});
-		}
+		
+		angular.forEach($scope.relatedTerm, function(term){
+			$scope.issue.relatedTerm.push(term.id);
+			$scope.issue.relationType.push("00000000-0000-0000-0000-000000007015");
+			$scope.issue.direction.push(true);
+		});
+		angular.forEach($scope.selected_classification, function(classification){
+			$scope.issue.classification.push(classification.val);
+		});
 		$scope.issue.requester = "a79f4257-016f-4704-a0b3-952c547d7a50";
 		$scope.issue.type = "00000000-0000-0000-0000-000000031111";
 		$scope.issue.description = tinyMCE.activeEditor.getContent();
 		$scope.relatedTerm.length = 0;
-		console.log($scope.issue);
+		$scope.selected_classification.length = 0;
 		$http({
 			method: 'POST',
 			url: 'https://gwu.collibra.com/rest/1.0/issue',
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 			transformRequest: function(obj) {
 		        var str = [];
-		        for(var p in obj)
-		        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-		        return str.join("&");
+		        for(var p in obj){
+		        	if(obj[p] instanceof Array){
+		        		for(var q in obj[p]){
+		        			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p][q]));
+		        		}
+		        	}else{
+		        		str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+		        	}
+		        }
+		        var aaa = str.join("&").replace( /%20/g, "+");
+		        console.log(aaa);
+		        return aaa;
 		    },
 			data: $scope.issue
 		}).then(
@@ -554,20 +577,31 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 			}
 		).then(
 			function(){
-				$scope.issue = {"relatedTerm":[], "priority": "Normal"};
+				$scope.issue = {"relatedTerm":[], "relationType":[], "direction":[], "classification":[], "priority": "Normal"};
 				tinyMCE.activeEditor.setContent("");
 			}
 		);
 	}
 
-	$scope.addRelevantAssets = function(id, val, type){
+	$scope.addRelevantAssets = function(id, val){
 		$scope.newRelatedTerm = "";
-		$scope.relatedTerm.push({"id": id, "val": val, "type": type});
+		$scope.relatedTerm.push({"id": id, "val": val});
 		$scope.inputFocused = true;
+	}
+
+	$scope.selected_classification = [];
+	$scope.addClassification = function(val){
+		$scope.newClassification = "";
+		$scope.selected_classification.push({"id": 11111, "val": val});
+		$scope.inputFocused2 = true;
 	}
 
 	$scope.deleteRelevantAssets = function(index){
 		$scope.relatedTerm.splice(index, 1); 
+	}
+
+	$scope.deleteClassification = function(index){
+		$scope.selected_classification.splice(index, 1); 
 	}
 
 	$scope.delaySearch = function(){
@@ -595,7 +629,6 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		}).then(
 			function successCallback(response) {
 			    $scope.relavantAssets = response.data.results;
-			    console.log($scope.relavantAssets);
 			    angular.forEach($scope.relavantAssets, function(result){
 			    	if(result.context.restUrl != ''){
 			    		$http({

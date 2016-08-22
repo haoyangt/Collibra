@@ -52,9 +52,11 @@ h1{
   text-align: center;
 }
 .links>a{
-  display: block;
   width: 42%;
   height: 160px;
+}
+.links>a, .faq>p>a{
+  display: block;
   margin: 1% 4%;
   padding: 5px;
   color: #fff;
@@ -64,13 +66,14 @@ h1{
   box-shadow: 4px 4px 12px black;
   transition: linear 0.2s;
 }
-.links>a:hover {
+.links>a:hover, .faq>p>a:hover{
   background-color: #DDD;
   border: 2px solid #000;
   text-decoration: none;
   transform: scale(1.1);
+  cursor: pointer;
 }
-.links>a:active{
+.links>a:active, .faq>p>a:active{
   background-color: #DDD;
   border-color: #398439;
   text-decoration: none;
@@ -84,7 +87,7 @@ h1{
   cursor: pointer;
   color: #000;
 }
-.links>a>img{
+.links>a>img, .faq>p>a>img{
   border-radius: 15px;
 }
 .login{

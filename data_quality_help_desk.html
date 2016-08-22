@@ -1,3 +1,5 @@
+<!-- Textarea Plugin -->
+<script src="http://cdn.tinymce.com/4/tinymce.min.js"></script>
 <div class="container" ng-controller="DataQualityHelpDeskCtrl">
 	<div class="cover" ng-init="displayCover=false" ng-show="displayCover">
 		<div class="cover-container">
@@ -36,16 +38,22 @@
 						</ul>
 						<div class="search-result">
 							<div class="result-detail" ng-repeat="result in relavantAssets track by $index" ng-if="result.context.val != ''">
-								<h4><a ng-click="addRelevantAssets(result.name.id, result.name.val, result.context.id)">{{result.name.val}}</a></h4>
+								<h4><a ng-click="addRelevantAssets(result.name.id, result.name.val)">{{result.name.val}}</a></h4>
 								<p>{{result.higherReference}} <span ng-show="result.higherReference">></span> {{result.context.val}}</p>
 								<p ng-repeat="attribute in result.attributes track by $index" ng-if="attribute.type=='Description' || attribute.type=='Definition'">{{attribute.val}}</p>
-								<a href="https://gwu.collibra.com/term/{{result.name.id}}" target="_blank">Get more details ...</a>
+								<a href="{{result.name.pageUrl}}" target="_blank">Get more details ...</a>
 							</div>
 						</div>
 					</div>
 					<div>
 						<p>Issue clarification</p>
-						<input type="input" ng-model="issue.classification" placeholder="Enter possible values and separate">
+						<ul ng-init="inputFocused2=false" ng-style="inputFocused2 && {'border': '2px solid #CC0000'}">
+							<li ng-repeat="cls in selected_classification track by $index">{{cls.val}}<a ng-click="deleteClassification($index)">×</a></li>
+							<li class="input"><input type="input" class="classification_input" ng-model="newClassification" placeholder="Enter possible values and separate" ng-focus="inputFocused2=true" ng-blur="inputFocused2=false"></li>
+						</ul>
+						<div class="classification">
+							<div ng-repeat = "cls in original_classifications | filter:newClassification track by $index"><a ng-click="addClassification(cls)">{{cls}}</a></div>
+						</div>
 					</div>
 					<input type="submit" value="Create Issue">
 				</div>
