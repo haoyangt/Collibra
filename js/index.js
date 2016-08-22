@@ -437,7 +437,8 @@ indexApp.controller('DataSharingAgreementsCtrl', function($scope, $http, $locati
 	}
 });
 
-indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location){
+indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location, $route){
+	// $route.reload();
 	// -------jQuery START----------
 	$(function(){
 		$('.relevant-assets').on('focus', function() {
@@ -545,7 +546,7 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		});
 		$scope.issue.requester = "a79f4257-016f-4704-a0b3-952c547d7a50";
 		$scope.issue.type = "00000000-0000-0000-0000-000000031111";
-		$scope.issue.description = tinyMCE.activeEditor.getContent();
+		$scope.issue.description = tinyMCE.get("description").getContent();
 		$scope.relatedTerm.length = 0;
 		$scope.selected_classification.length = 0;
 		$http({
