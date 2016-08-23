@@ -103,7 +103,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="result in filterd = (results | searchBarFilter: query | RCResultFilter:report_status_selected:report_types_selected:communities_selected |orderBy:orderField:isReverse) track by $index " ng-if="$index>=(currentPage-1)*10 && $index<currentPage*10" ng-style="result.status == 'Certified' && {'font-weight': 'bold'}">
+				<tr ng-repeat="result in filtered = (results | searchBarFilter: query | RCResultFilter:report_status_selected:report_types_selected:communities_selected |orderBy:orderField:isReverse) track by $index " ng-if="$index>=(currentPage-1)*10 && $index<currentPage*10" ng-style="result.status == 'Certified' && {'font-weight': 'bold'}">
 					<td><a href="{{result.name.pageUrl}}" target="_blank">{{result.name.val}}</a></td>
 					<td>{{result.description}}</td>
 					<td>{{result.status}}</td>
@@ -115,11 +115,11 @@
 		</table>
 		<div class="page">
 			<button class="btn btn-primary" ng-click="currentPage=currentPage-1; scrollTop()" ng-disabled="currentPage==1">LAST</button>
-			<span ng-show="currentPage*10 >= filterd.length">{{filterd.length}}</span>
-			<span ng-show="currentPage*10 < filterd.length">{{currentPage*10}}</span>
+			<span ng-show="currentPage*10 >= filtered.length">{{filtered.length}}</span>
+			<span ng-show="currentPage*10 < filtered.length">{{currentPage*10}}</span>
 			<span>/</span>
-			<span>{{filterd.length}} </span>
-			<button class="btn btn-primary" ng-disabled="currentPage*10 >= filterd.length" ng-click="currentPage=currentPage+1; scrollTop()">NEXT</button>
+			<span>{{filtered.length}} </span>
+			<button class="btn btn-primary" ng-disabled="currentPage*10 >= filtered.length" ng-click="currentPage=currentPage+1; scrollTop()">NEXT</button>
 		</div>
 	</div>
 </div>

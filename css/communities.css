@@ -196,3 +196,7 @@ h3{
 .result-section>table>tbody>tr>td>a:focus{
   text-decoration: none;
 }
+.result-section>.page{
+  float: right;
+  margin: 15px;
+}

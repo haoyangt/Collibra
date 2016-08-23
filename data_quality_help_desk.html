@@ -81,7 +81,7 @@
 	<div class="col-lg-3 left-section">
 		<div class="search-bar">
 			<p>
-				<input type="text" class="search-content" ng-model="query" />
+				<input type="text" class="search-content" ng-model="query" ng-change="currentPage=1" />
 				<img src="images/icons/magnifying_mirror.png" class="search-icon"/>
 			</p>
 		</div>
@@ -98,20 +98,28 @@
 			<button ng-click="displayCover=true">Log a Data Quality Issue</button>
 		</div>
 	</div>
-	<div class="col-lg-9 result-section">
+	<div class="col-lg-9 result-section" ng-init="currentPage=1">
 		<table class="table">
 			<thead>
 				<tr>
-					<th ng-click="orderField='name.val'; isReverse=!isReverse"><span>Name</span></th>
-					<th ng-click="orderField='status'; isReverse=!isReverse"><span>Status</span></th>
+					<th ng-click="orderField='name.val'; isReverse=!isReverse; scrollTop(); currentPage=1"><span>Name</span></th>
+					<th ng-click="orderField='status'; isReverse=!isReverse; scrollTop(); currentPage=1"><span>Status</span></th>
 				</tr>
 			</thead>
 			<tbody ng-init="orderField='name.val'; isReverse=false">
-				<tr ng-repeat="result in results | filter:{name.val: query} | DSAResultFilter: status_selected | orderBy:orderField:isReverse track by $index" >
+				<tr ng-repeat="result in filtered = ( results | filter:{name.val: query} | DSAResultFilter: status_selected | orderBy:orderField:isReverse ) track by $index" ng-if="$index>=(currentPage-1)*10 && $index<currentPage*10">
 					<td><a href="{{result.name.pageUrl}}" target="_blank">{{result.name.val}}</a></td>
 					<td>{{result.status}}</td>
 				</tr>
 			</tbody>
 		</table>
+		<div class="page">
+			<button class="btn btn-primary" ng-click="currentPage=currentPage-1; scrollTop()" ng-disabled="currentPage==1">LAST</button>
+			<span ng-show="currentPage*10 >= filtered.length">{{filtered.length}}</span>
+			<span ng-show="currentPage*10 < filtered.length">{{currentPage*10}}</span>
+			<span>/</span>
+			<span>{{filtered.length}} </span>
+			<button class="btn btn-primary" ng-disabled="currentPage*10 >= filtered.length" ng-click="currentPage=currentPage+1; scrollTop()">NEXT</button>
+		</div>
 	</div>
 </div>

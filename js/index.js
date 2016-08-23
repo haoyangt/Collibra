@@ -271,6 +271,7 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 								if(count == totalCount){
 									$scope.loading_icon_display = false;
 								}
+								console.log($scope.results);
 							}, function errorCallback(response) {
 								$location.path("/Collibra/");
 								$rootScope.msg="Time out! Please log in and try again!";
@@ -571,7 +572,7 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 			data: $scope.issue
 		}).then(
 			function successCallback(response) {
-				console.log(response);
+				$scope.displayCover = false;
 			}, function errorCallback(response) {
 				$location.path("/Collibra/");
 				$rootScope.msg="Time out! Please log in and try again!";
