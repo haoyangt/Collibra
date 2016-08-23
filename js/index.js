@@ -271,7 +271,6 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 								if(count == totalCount){
 									$scope.loading_icon_display = false;
 								}
-								console.log($scope.results);
 							}, function errorCallback(response) {
 								$location.path("/Collibra/");
 								$rootScope.msg="Time out! Please log in and try again!";
@@ -546,7 +545,7 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 			$scope.issue.classification.push(classification.val);
 		});
 		$scope.issue.requester = "a79f4257-016f-4704-a0b3-952c547d7a50";
-		$scope.issue.type = "00000000-0000-0000-0000-000000031111";
+		$scope.issue.type = "00000000-0000-0000-0000-000000031001";
 		$scope.issue.description = tinyMCE.get("description").getContent();
 		$scope.relatedTerm.length = 0;
 		$scope.selected_classification.length = 0;
@@ -565,9 +564,7 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		        		str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 		        	}
 		        }
-		        var aaa = str.join("&").replace( /%20/g, "+");
-		        console.log(aaa);
-		        return aaa;
+		        return str.join("&").replace( /%20/g, "+");
 		    },
 			data: $scope.issue
 		}).then(
