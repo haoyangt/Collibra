@@ -7,7 +7,11 @@
 	</div>
 	<div class="col-lg-12 login">
 		<p>You have <strong>NOT</strong> logged in yet. Click the button below to log in.</p>
-		<button class="btn btn-success btn-lg btn-block" ng-click="login()">LOGIN</button>
+		<form>
+			<input type="text" placeholder="USERNAME" ng-model="user.username">
+			<input type="password" placeholder="PASSWORD" ng-model="user.password">
+			<button class="btn btn-success btn-lg btn-block" ng-click="login()">LOGIN</button>
+		</form>
 	</div>
 	<div class="col-lg-12 seperator">--------------------------------------OR--------------------------------------</div>
 	<div class="col-lg-12 back">

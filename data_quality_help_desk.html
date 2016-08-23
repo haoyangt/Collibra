@@ -46,11 +46,11 @@
 					<div>
 						<p>Issue clarification</p>
 						<ul ng-init="inputFocused2=false" ng-style="inputFocused2 && {'border': '2px solid #CC0000'}">
-							<li ng-repeat="cls in selected_classification track by $index">{{cls.val}}<a ng-click="deleteClassification($index)">×</a></li>
+							<li ng-repeat="cls in selected_classification track by $index">{{cls.value}}<a ng-click="deleteClassification($index)">×</a></li>
 							<li class="input"><input type="input" class="classification_input" ng-model="newClassification" placeholder="Enter possible values and separate" ng-focus="inputFocused2=true" ng-blur="inputFocused2=false"></li>
 						</ul>
 						<div class="classification">
-							<div ng-repeat = "cls in original_classifications | filter:newClassification track by $index"><a ng-click="addClassification(cls)">{{cls}}</a></div>
+							<div ng-repeat = "cls in original_classifications | filter:newClassification track by $index"><a ng-click="addClassification(cls)">{{cls.value}}</a></div>
 						</div>
 					</div>
 					<input type="submit" value="Create Issue">

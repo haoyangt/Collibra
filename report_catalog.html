@@ -77,7 +77,7 @@
 		</div>
 		<div class="rating">
 			<p class="rating-title">Rating</p>
-			<div class="rating-content" ng-init="isNotHovering=true">
+			<div class="rating-content" ng-init="isNotHovering=true; rating_score=0">
 			    <span ng-class="{'selected': rating_score>=5 && isNotHovering}" ng-click="rating_score=5" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
 			    <span ng-class="{'selected': rating_score>=4 && isNotHovering}" ng-click="rating_score=4" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
 			    <span ng-class="{'selected': rating_score>=3 && isNotHovering}" ng-click="rating_score=3" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
@@ -103,7 +103,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="result in filtered = (results | searchBarFilter: query | RCResultFilter:report_status_selected:report_types_selected:communities_selected |orderBy:orderField:isReverse) track by $index " ng-if="$index>=(currentPage-1)*10 && $index<currentPage*10" ng-style="result.status == 'Certified' && {'font-weight': 'bold'}">
+				<tr ng-repeat="result in filtered = (results | searchBarFilter: query | RCResultFilter:report_status_selected:report_types_selected:communities_selected | RatingFilter: rating_score | orderBy:orderField:isReverse) track by $index " ng-if="$index>=(currentPage-1)*10 && $index<currentPage*10" ng-style="result.status == 'Certified' && {'font-weight': 'bold'}">
 					<td><a href="{{result.name.pageUrl}}" target="_blank">{{result.name.val}}</a></td>
 					<td>{{result.description}}</td>
 					<td>{{result.status}}</td>

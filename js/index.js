@@ -64,7 +64,7 @@ indexApp.run( function($rootScope, $location, $http) {
     });
  });
 
-indexApp.controller('IndexCtrl', function($scope, $route, $routeParams){
+indexApp.controller('IndexCtrl', function($scope, $route, $routeParams, $http){
 	$scope.$on('$routeChangeStart', function() {
     	$scope.$watch( function(){
 			return $route.current.css;
@@ -205,9 +205,51 @@ indexApp.controller('CommunitiesCtrl', function($scope, $http, $location, $rootS
 
 
 indexApp.controller('LoginCtrl', function($scope, $http, $location, $rootScope){
-	$scope.login= function(){
-		window.open("https://gwu.collibra.com");
-	}
+	$scope.login = function(){
+  		$http({
+			method: 'POST',
+			url: 'https://gwu.collibra.com/rest/1.0/user/login',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			transformRequest: function(obj) {
+		        var str = [];
+		        for(var p in obj){
+		        	if(obj[p] instanceof Array){
+		        		for(var q in obj[p]){
+		        			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p][q]));
+		        		}
+		        	}else{
+		        		str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+		        	}
+		        }
+		        return str.join("&").replace( /%20/g, "+");
+		    },
+			data: $scope.user
+		}).then(
+			function successCallback(response) {
+				if(~response.data.indexOf("again")){
+					$rootScope.msg = response.data;
+					return;
+				}
+				$http({
+					method: 'GET',
+					url: 'https://gwu.collibra.com/rest/1.0/user/find?searchName='+$scope.user.username
+				}).then(
+					function successCallback(response) {
+						localStorage.setItem("userId",response.data.user[0].resourceId);
+						$rootScope.msg = "";
+						$location.path("/Collibra/");
+					}, function errorCallback(response) {
+						$location.path("/Collibra/");
+						$rootScope.msg="Time out! Please log in and try again!";
+					}
+				);
+			}, function errorCallback(response) {
+				$location.path("/Collibra/");
+				$rootScope.msg="Time out! Please log in and try again!";
+			}
+		)
+  	}
+
 	$scope.back = function(){
 		$rootScope.msg="Please wait...";
 		$scope.btn_disabled = true;
@@ -278,6 +320,21 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 						);
 					}
 				});
+				$http({
+					method: 'GET',
+					url: result.name.restUrl,
+					contentType: "application/json"
+				}).then(
+					function successCallback(response) {
+						angular.forEach(response.data.attributeReferences.attributeReference, function(reference){
+							if(reference.labelReference.signifier == "Rating")
+								result.rating = reference.value;
+						});
+					}, function errorCallback(response) {
+						$location.path("/Collibra/");
+						$rootScope.msg="Time out! Please log in and try again!";
+					}
+				);
 			});
 		}, function errorCallback(response) {
 			$location.path("/Collibra/");
@@ -388,6 +445,7 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 			$scope.report_types_selected[i]=false;
 		for(var i=1; i<=communities_selected_length; i++)
 			$scope.communities_selected[i]=false;
+		$scope.rating_score = 0;
 	}
 });
 
@@ -473,7 +531,7 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		mode : "specific_textareas",
         editor_selector : "mceEditor"
 	});
-	$scope.original_classifications = ["Accuracy Issue","Completeness Issue","Conformity Issue","Consistency Issue","Data Definition Issue","Data Policy Issue","Data Quality Issue","Definition Is Missing","Definition not Clear","Definition not Correct","Integrity Issue","Policy Is Missing","Policy non Compliance Issue"];
+	$scope.original_classifications = [{id:"00000000-0000-0000-0000-000000008007", value: "Accuracy Issue"},{id:"00000000-0000-0000-0000-000000008004", value: "Completeness Issue"},{id:"00000000-0000-0000-0000-000000008005", value: "Conformity Issue"},{id:"00000000-0000-0000-0000-000000008006", value: "Consistency Issue"},{id:"00000000-0000-0000-0000-000000008003", value: "Data Definition Issue"},{id:"00000000-0000-0000-0000-000000008002", value: "Data Policy Issue"},{id:"00000000-0000-0000-0000-000000008001", value: "Data Quality Issue"},{id:"00000000-0000-0000-0000-000000008014", value: "Definition Is Missing"},{id:"00000000-0000-0000-0000-000000008012", value: "Definition not Clear"},{id:"00000000-0000-0000-0000-000000008013", value: "Definition not Correct"},{id:"00000000-0000-0000-0000-000000008008", value: "Duplication Issue"},{id:"00000000-0000-0000-0000-000000008009", value: "Integrity Issue"},{id:"00000000-0000-0000-0000-000000008011", value: "Policy Is Missing"},{id:"00000000-0000-0000-0000-000000008010", value: "Policy non Compliance Issue"}];
 	$scope.status_selected = {};
 	$scope.issue = {"relatedTerm":[], "relationType":[], "direction":[], "classification":[]};
 	$scope.relatedTerm = [];
@@ -542,11 +600,11 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 			$scope.issue.direction.push(true);
 		});
 		angular.forEach($scope.selected_classification, function(classification){
-			$scope.issue.classification.push(classification.val);
+			$scope.issue.classification.push(classification.id);
 		});
-		$scope.issue.requester = "a79f4257-016f-4704-a0b3-952c547d7a50";
+		$scope.issue.requester = localStorage.getItem("userId");
 		$scope.issue.type = "00000000-0000-0000-0000-000000031001";
-		$scope.issue.description = tinyMCE.get("description").getContent();
+		$scope.issue.description = tinyMCE.activeEditor.getContent();
 		$scope.relatedTerm.length = 0;
 		$scope.selected_classification.length = 0;
 		$http({
@@ -570,14 +628,12 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 		}).then(
 			function successCallback(response) {
 				$scope.displayCover = false;
+				$scope.issue = {"relatedTerm":[], "relationType":[], "direction":[], "classification":[], "priority": "Normal"};
+				tinyMCE.activeEditor.setContent("");
+				$route.reload();
 			}, function errorCallback(response) {
 				$location.path("/Collibra/");
 				$rootScope.msg="Time out! Please log in and try again!";
-			}
-		).then(
-			function(){
-				$scope.issue = {"relatedTerm":[], "relationType":[], "direction":[], "classification":[], "priority": "Normal"};
-				tinyMCE.activeEditor.setContent("");
 			}
 		);
 	}
@@ -589,9 +645,9 @@ indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location
 	}
 
 	$scope.selected_classification = [];
-	$scope.addClassification = function(val){
+	$scope.addClassification = function(cls){
 		$scope.newClassification = "";
-		$scope.selected_classification.push({"id": 11111, "val": val});
+		$scope.selected_classification.push(cls);
 		$scope.inputFocused2 = true;
 	}
 
@@ -750,6 +806,18 @@ indexApp.filter("DSAResultFilter", function(){
 				if(item.status == item2)
 					output.push(item);
 			});
+		});
+		return output;
+	}
+});
+indexApp.filter("RatingFilter", function(){
+	return function(collection, rating) {
+		if(rating == 0)
+			return collection;
+		var output = [];
+		angular.forEach(collection, function(item) {
+			if(item.rating == rating)
+				output.push(item);
 		});
 		return output;
 	}
