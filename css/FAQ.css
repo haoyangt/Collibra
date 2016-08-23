@@ -10,6 +10,14 @@ h3{
 .container{
 	width:95%;
 }
+.page-header{
+  position: relative;
+}
+.page-header>.logout{
+  position: absolute;
+  bottom: 0;
+  right: 50px;
+}
 .subheader{
   margin: 0;
   height: 70px;

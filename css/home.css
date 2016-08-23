@@ -7,6 +7,14 @@ h1{
 .container{
 	width:60%;
 }
+.page-header{
+  position: relative;
+}
+.page-header>.logout{
+  position: absolute;
+  bottom: 0;
+  right: 50px;
+}
 .search-content{
 	width: 82%;
 }

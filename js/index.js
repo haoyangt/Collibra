@@ -72,6 +72,19 @@ indexApp.controller('IndexCtrl', function($scope, $route, $routeParams, $http){
 			$scope.css = value;
 		});
   	});
+
+  	$scope.logout = function(){
+  		$http({
+				method: 'POST',
+				url: 'https://gwu.collibra.com/rest/1.0/user/logout'
+		}).then(
+			function successCallback(response) {
+			    $route.reload();
+			}, function errorCallback(response) {
+				$route.reload();
+			}
+		);
+  	}
 });
 
 indexApp.controller('HomeCtrl', function($scope, $http, $location, $rootScope, $route){
@@ -496,7 +509,6 @@ indexApp.controller('DataSharingAgreementsCtrl', function($scope, $http, $locati
 });
 
 indexApp.controller('DataQualityHelpDeskCtrl', function($scope, $http, $location, $route){
-	// $route.reload();
 	// -------jQuery START----------
 	$(function(){
 		$('.relevant-assets').on('focus', function() {
