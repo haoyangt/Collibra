@@ -1,0 +1,76 @@
+div{
+  margin: 5px 0;
+}
+h1{
+  text-align: center;
+}
+h3{
+  margin-top: 0px;
+}
+.container{
+	width:95%;
+}
+.subheader{
+  margin: 0;
+  height: 70px;
+}
+.subheader>.title, .subheader>.nav{
+  margin: 0;
+  height: 3.5em;
+}
+.subheader>.nav>ul{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0
+}
+.subheader>.nav>ul>li{
+  float: right;
+  margin-left: 5px;
+  padding: 0 10px;
+  width: 170px;
+  text-align: center;
+  list-style-type: none;
+  line-height: 3.5em;
+  font-size: 11px;
+  background-color: #006400;
+  border-color: #398439;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 3px 3px 5px black;
+  transition: linear 0.3s;
+}
+.subheader>.nav>ul>li.selected{
+  background-color: #4CAF50;
+  border-color: #4cae4c;
+  cursor: default;
+}
+.subheader>.nav>ul>li:hover:not(.selected){
+  background-color: #fff;
+  border-color: #4cae4c;
+  cursor: pointer;
+  transform: scale(1.05);
+}
+.subheader>.nav>ul>li>a{
+  display: block;
+  height: 100%;
+  width: 100%;
+  color: white;
+  text-decoration: none;
+}
+.subheader>.nav>ul>li:hover:not(.selected)>a{
+  color: green;
+}
+.content{
+	width: 80%;
+	margin: 0 8% 0 13%;
+}
+.content>div{
+	margin: 10px;
+	padding: 10px;
+	border: 3px solid lavender;
+}
+.content>div>p:nth-of-type(1){
+	font-weight: bold;
+}

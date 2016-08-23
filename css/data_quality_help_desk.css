@@ -147,6 +147,39 @@ h3{
   color: #5D71D9;
   cursor: pointer;
 }
+.cover>.cover-container>form>.content>div:nth-of-type(6){
+  position: relative;
+}
+.cover>.cover-container>form>.content>div>.classification{
+  position: absolute;
+  display: none;
+  left: 100px;
+  top: -288px;
+  background: #fff;
+  border: solid 2px lavender;
+  width:70%;
+  height:300px;
+  z-index: 1;
+  overflow-y: auto;
+}
+.cover>.cover-container>form>.content>div>.classification>div{
+  margin: 0;
+  padding: 5px;
+  height: 30px;
+  border-bottom: 2px solid lavender;
+  color: #555;
+}
+.cover>.cover-container>form>.content>div>.classification>div:hover{
+  background: #88B93F;
+}
+.cover>.cover-container>form>.content>div>.classification>div>a{
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+}
 .cover>.cover-container>form>.content>input{
   width: 140px;
   height: 30px;
