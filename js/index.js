@@ -44,23 +44,23 @@ indexApp.run( function($rootScope, $location, $http) {
 
     // register listener to watch route changes
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-    	var data = {"filter":{"category":["TE","VC","CO","SS","UR","GR"],"includeMeta":false,"type":{"asset":[],"domain":[]},"community":[],"vocabulary":[],"status":[]},"fields":["name","comment","attributes"],"order":{"by":"score","sort":"desc"},"offset":0,"limit":1,"query":"whatever"};			
 		$http({
-				method: 'POST',
-				url: 'https://gwu.collibra.com/rest/latest/search',
-				contentType: "application/json",
-				data: JSON.stringify(data)
+			method: 'GET',
+			url: 'https://gwu.collibra.com/rest/1.0/user/loggedin'
 		}).then(
 			function successCallback(response) {
+			    if(response.data == "false"){
+			    	if ( next.templateUrl == "login.html" ) {
+			          // already going to #login, no redirect needed
+			        } else {
+			          // not going to #login, we should redirect now
+			          $location.path( "/login" );
+			        }
+			    }
 			}, function errorCallback(response) {
-				if ( next.templateUrl == "login.html" ) {
-		          // already going to #login, no redirect needed
-		        } else {
-		          // not going to #login, we should redirect now
-		          $location.path( "/login" );
-		        }
+				$location.path( "/login" );
 			}
-		);       
+		);
     });
  });
 
