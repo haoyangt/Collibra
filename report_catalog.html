@@ -78,7 +78,7 @@
 				</span>
 			</div>	
 		</div>
-		<div class="rating">
+		<!-- <div class="rating">
 			<p class="rating-title">Rating</p>
 			<div class="rating-content" ng-init="isNotHovering=true; rating_score=0">
 			    <span ng-class="{'selected': rating_score>=5 && isNotHovering}" ng-click="rating_score=5" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
@@ -87,7 +87,7 @@
 			    <span ng-class="{'selected': rating_score>=2 && isNotHovering}" ng-click="rating_score=2" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
 			    <span ng-class="{'selected': rating_score>=1 && isNotHovering}" ng-click="rating_score=1" ng-mouseenter="isNotHovering=false" ng-mouseleave="isNotHovering=true">★</span>
 			</div>
-		</div>
+		</div> -->
 	</div>
 	<div class="col-lg-9 result-section" ng-init="currentPage=1">
 		<div class="loading" ng-init="loading_icon_display=true" ng-show="loading_icon_display">
@@ -112,7 +112,9 @@
 					<td>{{result.status}}</td>
 					<td>{{result.reportType}}</td>
 					<td>{{result.context.val}}</td>
-					<td><a ng-show="result.gsourceLink != null" href="{{result.gsourceLink}}" target="_blank">View</a></td>
+					<!-- <td><a ng-show="result.gsourceLink != null" href="{{result.gsourceLink}}" target="_blank">View</a></td> -->
+					<!-- <td><a href="https://gsource.gwu.edu/cognos10/cgi-bin/cognos.cgi/gosearch?csn.terms={{result.name.val}}" target="_blank">View</a></td> -->
+					<td><a href="https://gsource.gwu.edu/cognos10/cgi-bin/cognos.cgi" target="_blank">View</a></td>
 				</tr>
 			</tbody>
 		</table>

@@ -56,6 +56,10 @@ indexApp.run( function($rootScope, $location, $http) {
 			          // not going to #login, we should redirect now
 			          $location.path( "/login" );
 			        }
+			    }else{
+			    	if ( next.templateUrl == "login.html" ) {
+			    		$location.path( "/" );
+			        }
 			    }
 			}, function errorCallback(response) {
 				$location.path( "/login" );
@@ -64,7 +68,7 @@ indexApp.run( function($rootScope, $location, $http) {
     });
  });
 
-indexApp.controller('IndexCtrl', function($scope, $route, $routeParams, $http){
+indexApp.controller('IndexCtrl', function($rootScope, $scope, $route, $routeParams, $http){
 	$scope.$on('$routeChangeStart', function() {
     	$scope.$watch( function(){
 			return $route.current.css;
@@ -300,55 +304,56 @@ indexApp.controller('ReportCatalogCtrl', function($scope, $http, $location){
 	}).then(
 		function successCallback(response) {
 			$scope.results = response.data.results;
-			var totalCount = 0;
-			var count = 0;
-			angular.forEach($scope.results, function(result){
-				angular.forEach(result.attributes, function(attribute){
-					if(attribute.type == 'Link'){
-						totalCount++;
-						$http({
-							method: 'GET',
-							url: attribute.restUrl,
-							contentType: "application/json"
-						}).then(
-							function successCallback(response) {
-								angular.forEach(response.data.attributeReferences.attributeReference, function(attributeReference){
-									if(attributeReference.value != undefined){
-										var indexStart = attributeReference.value.indexOf('href="https://gsource.gwu.edu/');
-										if(indexStart >= 0){
-											var tempUrl = attributeReference.value.substring(indexStart+6);
-											var finalUrl = tempUrl.substring(0, tempUrl.indexOf('"'));
-											result.gsourceLink = finalUrl;
-										}
-									}
-								});
-								count++;
-								if(count == totalCount){
-									$scope.loading_icon_display = false;
-								}
-							}, function errorCallback(response) {
-								$location.path("/Collibra/");
-								$rootScope.msg="Time out! Please log in and try again!";
-							}
-						);
-					}
-				});
-				$http({
-					method: 'GET',
-					url: result.name.restUrl,
-					contentType: "application/json"
-				}).then(
-					function successCallback(response) {
-						angular.forEach(response.data.attributeReferences.attributeReference, function(reference){
-							if(reference.labelReference.signifier == "Rating")
-								result.rating = reference.value;
-						});
-					}, function errorCallback(response) {
-						$location.path("/Collibra/");
-						$rootScope.msg="Time out! Please log in and try again!";
-					}
-				);
-			});
+			$scope.loading_icon_display = false;
+			// var totalCount = 0;
+			// var count = 0;
+			// angular.forEach($scope.results, function(result){
+			// 	angular.forEach(result.attributes, function(attribute){
+			// 		if(attribute.type == 'Link'){
+			// 			totalCount++;
+			// 			$http({
+			// 				method: 'GET',
+			// 				url: attribute.restUrl,
+			// 				contentType: "application/json"
+			// 			}).then(
+			// 				function successCallback(response) {
+			// 					angular.forEach(response.data.attributeReferences.attributeReference, function(attributeReference){
+			// 						if(attributeReference.value != undefined){
+			// 							var indexStart = attributeReference.value.indexOf('href="https://gsource.gwu.edu/');
+			// 							if(indexStart >= 0){
+			// 								var tempUrl = attributeReference.value.substring(indexStart+6);
+			// 								var finalUrl = tempUrl.substring(0, tempUrl.indexOf('"'));
+			// 								result.gsourceLink = finalUrl;
+			// 							}
+			// 						}
+			// 					});
+			// 					count++;
+			// 					if(count == totalCount){
+			// 						$scope.loading_icon_display = false;
+			// 					}
+			// 				}, function errorCallback(response) {
+			// 					$location.path("/Collibra/");
+			// 					$rootScope.msg="Time out! Please log in and try again!";
+			// 				}
+			// 			);
+			// 		}
+			// 	});
+			// 	$http({
+			// 		method: 'GET',
+			// 		url: result.name.restUrl,
+			// 		contentType: "application/json"
+			// 	}).then(
+			// 		function successCallback(response) {
+			// 			angular.forEach(response.data.attributeReferences.attributeReference, function(reference){
+			// 				if(reference.labelReference.signifier == "Rating")
+			// 					result.rating = reference.value;
+			// 			});
+			// 		}, function errorCallback(response) {
+			// 			$location.path("/Collibra/");
+			// 			$rootScope.msg="Time out! Please log in and try again!";
+			// 		}
+			// 	);
+			// });
 		}, function errorCallback(response) {
 			$location.path("/Collibra/");
 			$rootScope.msg="Time out! Please log in and try again!";
